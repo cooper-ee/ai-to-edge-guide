@@ -1,0 +1,9 @@
+# Versions used in the delivered Windows CPU experiment run.
+# torch was installed as 2.11.0+cu128, but all tutorial computations ran on CPU.
+# Install torch for your platform using its official distribution instructions.
+numpy==2.2.6
+torch==2.11.0
+onnx==1.23.2
+onnxruntime==1.23.2
+onnxscript==0.7.2
+onnx_ir==1.0.0
