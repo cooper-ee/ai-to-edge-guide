@@ -1,0 +1,45 @@
+{
+  "desktop_viewport": [
+    1440,
+    1080
+  ],
+  "mobile_viewport": [
+    390,
+    844
+  ],
+  "no_mobile_horizontal_overflow": true,
+  "interactive_assertions": 8,
+  "page_errors": [],
+  "svg_checks": [
+    {
+      "file": "cover.svg",
+      "clipped_text": []
+    },
+    {
+      "file": "deployment.svg",
+      "clipped_text": []
+    },
+    {
+      "file": "host-board.svg",
+      "clipped_text": []
+    },
+    {
+      "file": "online-softmax.svg",
+      "clipped_text": []
+    },
+    {
+      "file": "roadmap.svg",
+      "clipped_text": []
+    },
+    {
+      "file": "roofline.svg",
+      "clipped_text": []
+    },
+    {
+      "file": "stack.svg",
+      "clipped_text": []
+    }
+  ],
+  "reader_test": "All HTTP/HTTPS blocked; local MathJax SVG rendering passed",
+  "math_formulas_rendered": 149
+}

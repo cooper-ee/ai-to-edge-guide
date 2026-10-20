@@ -1,0 +1,333 @@
+{
+  "seed": 42,
+  "python": "3.10.20",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "dependencies": {
+    "numpy": "2.2.6",
+    "torch": "2.11.0+cu128",
+    "onnx": "1.23.2",
+    "onnxruntime": "1.23.2",
+    "onnxscript": "0.7.2",
+    "onnx_ir": "1.0.0"
+  },
+  "experiments": {
+    "ml": {
+      "elapsed_s": 0.021855599999980768,
+      "metrics": {
+        "initial_train_loss": 0.6931471805599453,
+        "final_train_loss": 0.16635187410419988,
+        "val_loss": 0.17994408117078844,
+        "test_accuracy": 0.9722222222222222,
+        "test_f1": 0.9710982658959537,
+        "split_sizes": [
+          540,
+          180,
+          180
+        ],
+        "seed": 42
+      }
+    },
+    "gradients": {
+      "elapsed_s": 8.060000027398928e-05,
+      "metrics": {
+        "max_gradient_error": 2.703420820537872e-12,
+        "epsilon": 1e-05
+      }
+    },
+    "attention": {
+      "elapsed_s": 0.0005523999998331419,
+      "metrics": {
+        "cached_max_error": 3.3306690738754696e-16,
+        "blocked_max_error": 4.440892098500626e-16,
+        "shape": [
+          19,
+          8
+        ],
+        "block_size": 5,
+        "note": "Float64 numerical reference; not a GPU speed benchmark"
+      }
+    },
+    "memory": {
+      "elapsed_s": 7.000000096013537e-06,
+      "metrics": {
+        "full_attention_KV_MiB": 48.0,
+        "hybrid_full_attention_part_MiB": 12.0,
+        "config": {
+          "layers": 24,
+          "full_layers_in_hybrid": 6,
+          "kv_heads": 4,
+          "head_dim": 64,
+          "tokens": 2048,
+          "batch": 1,
+          "bytes_per_element": 2
+        },
+        "note": "Synthetic configuration; recurrent state, weights and workspace excluded"
+      }
+    },
+    "quantization": {
+      "elapsed_s": 0.0006773000000066531,
+      "metrics": {
+        "comparisons": [
+          {
+            "bits": 8,
+            "per_channel": false,
+            "percentile": 100,
+            "weight_mse": 0.004402952569489069,
+            "output_mse": 0.2872866030301618,
+            "ideal_weight_bytes": 2048.0,
+            "scale_count": 1
+          },
+          {
+            "bits": 8,
+            "per_channel": true,
+            "percentile": 100,
+            "weight_mse": 0.0001211045386617933,
+            "output_mse": 0.008158250366867393,
+            "ideal_weight_bytes": 2048.0,
+            "scale_count": 32
+          },
+          {
+            "bits": 4,
+            "per_channel": true,
+            "percentile": 100,
+            "weight_mse": 0.023073856812129773,
+            "output_mse": 1.586110818755231,
+            "ideal_weight_bytes": 1024.0,
+            "scale_count": 32
+          },
+          {
+            "bits": 4,
+            "per_channel": true,
+            "percentile": 99,
+            "weight_mse": 0.19468507435249197,
+            "output_mse": 11.562498635547092,
+            "ideal_weight_bytes": 1024.0,
+            "scale_count": 32
+          }
+        ],
+        "note": "INT4 values stored in int8 for clarity; no packed kernel or speed claim"
+      }
+    },
+    "serving": {
+      "elapsed_s": 2.610000001368462e-05,
+      "metrics": {
+        "lengths": [
+          2,
+          8,
+          2,
+          2,
+          6,
+          3
+        ],
+        "slots": 2,
+        "static": {
+          "makespan_ticks": 16,
+          "completion_ticks": [
+            2,
+            8,
+            10,
+            10,
+            16,
+            13
+          ],
+          "trace": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1
+            ],
+            [
+              1
+            ],
+            [
+              1
+            ],
+            [
+              1
+            ],
+            [
+              1
+            ],
+            [
+              1
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              4
+            ],
+            [
+              4
+            ],
+            [
+              4
+            ]
+          ],
+          "tokens_per_tick": 1.4375
+        },
+        "continuous": {
+          "makespan_ticks": 12,
+          "completion_ticks": [
+            2,
+            8,
+            4,
+            6,
+            12,
+            11
+          ],
+          "trace": [
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              4
+            ]
+          ],
+          "tokens_per_tick": 1.9166666666666667
+        },
+        "note": "Abstract ticks; no prefill/KV admission/real kernel cost; not a vLLM reproduction"
+      }
+    },
+    "rag": {
+      "elapsed_s": 0.0020202000000608678,
+      "metrics": {
+        "recall_at_2": 1.0,
+        "num_questions": 4,
+        "example": [
+          {
+            "id": "D1",
+            "title": "KV Cache",
+            "text": "KV Cache 缓存历史 token 的键和值，减少自回归推理的重复投影计算，但需要额外内存。",
+            "score": 0.505820890348831
+          }
+        ],
+        "out_of_domain_abstains": true,
+        "allowed_tool_result": {
+          "model_id": "toy-mlp-v1",
+          "input_features": 4,
+          "runtime": "CPU",
+          "source": "local registry"
+        },
+        "unknown_tool_rejected": true,
+        "note": "Extractive retrieval and deterministic tool router, without an LLM; not full RAG generation"
+      }
+    },
+    "compiler": {
+      "elapsed_s": 0.00017170000000987784,
+      "metrics": {
+        "tiled_max_error": 1.7763568394002505e-15,
+        "illustrative_roofline_GFLOPs": 40.0,
+        "illustrative_knee_FLOPs_per_byte": 50.0,
+        "note": "Python loop demonstrates tail tiles and algebra, not acceleration"
+      }
+    },
+    "classifier": {
+      "elapsed_s": 2.3397586000000956,
+      "metrics": {
+        "initial_train_loss": 0.6899150609970093,
+        "selected_val_loss": 0.09364311397075653,
+        "test_accuracy": 0.9555555582046509,
+        "parameters": 114,
+        "epochs": 120,
+        "seed": 42,
+        "checkpoint": "classifier.pt",
+        "note": "Synthetic data; an educational classifier, not a production accuracy claim"
+      }
+    },
+    "export": {
+      "elapsed_s": 2.2781174000001556,
+      "metrics": {
+        "onnx_max_abs_error": 9.5367431640625e-07,
+        "tested_batches": [
+          1,
+          7,
+          32,
+          64
+        ],
+        "argmax_agreement": 1.0,
+        "onnx_test_accuracy": 0.9555555555555556,
+        "graph_checked": true,
+        "exporter": "torch.export / dynamo=True",
+        "opset": 18
+      }
+    },
+    "tiny-lm": {
+      "elapsed_s": 0.23422919999984515,
+      "metrics": {
+        "first_loss": 3.4802563190460205,
+        "final_loss": 0.9092133045196533,
+        "steps": 100,
+        "parameters": 16312,
+        "cached_logits_max_error": 3.814697265625e-06,
+        "future_leakage_max_error": 0.0,
+        "generated_example": "red green ble . . stelun on on on . . on",
+        "note": "Training-loss and numerical checks only; repeated toy corpus cannot establish generalization"
+      }
+    }
+  }
+}

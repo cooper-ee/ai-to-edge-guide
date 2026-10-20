@@ -1,0 +1,140 @@
+{
+  "archive": "ai-to-edge-deployment-main.zip",
+  "archive_sha256": "6d0b5935113af93f569c8fbbd88aec702248a1ecbd2cbf620fbd6d6c0bb11d87",
+  "upstream": "https://github.com/yunxiao11xie/ai-to-edge-deployment",
+  "snapshot_commit": "unknown: supplied ZIP has no Git metadata",
+  "reviewed_documents": [
+    {
+      "path": "ai-to-edge-deployment-main/README.md",
+      "sha256": "a68b434a4d70843334eacd1f1b5bc618b6d3f2ba643a81630aefce87fb57c7e8"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/01_Qwen3.5-2B模型解剖与Shape主线.md",
+      "sha256": "ede702f14c10b468b93fc3c64fd976b06d5b565f9e8198e24f7a3288fd77e2b7"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/02_RKLLM软件栈_Artifact_Runtime与Driver.md",
+      "sha256": "9f7b70ad484764ff1b0612b974ad80d595eb792208e5c83a5dc56729fe238faf"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/03_RKLLM转换_量化与W4A16_GRQ.md",
+      "sha256": "29eeda59016890562d0fc97f8fdd87cec10f7b2c5f416cfabe71592ea4585ab0"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/04_Prefill_Decode_混合注意力与缓存.md",
+      "sha256": "2b06eccf90fd6b2b6c3e66dd9137cfdaae144cf87f25ba96a8283492a6af8f80"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/05_RK3576性能模型_GEMM_GEMV与Roofline.md",
+      "sha256": "a974bbace7e42c6f18ed65b9e93f890cc420fe390c0539e9a44a63f4b9644c8a"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/06_4GB内存容量工程与测量方法.md",
+      "sha256": "16b5d18b9b0fb23fc7ca150bb46bb34c92f950e532fb2b1b6748a0b61b841223"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/07_RKLLM_C_API_Runtime封装与服务化.md",
+      "sha256": "ddf8de9ffd63b183eb418528f41eb54876b216a5d7df12ddc931e3ab82044d07"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/08_IMX415_RKNN_RKLLM多模态链路.md",
+      "sha256": "44c76560e4ab98e067ada9e7882c97085a13d4c0fb7d862fceda9b728b0a8486"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/09_版本矩阵_故障定位与回归测试.md",
+      "sha256": "51ebd35089d1570239c14131ce9e18d4d8f0d089973b70885115fdca1106fc4a"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/10_Qwen3.5-2B_RK3576完整可复现实战.md",
+      "sha256": "a7ac5a5749086e989be64b81521c05bfec948d9dac814dd427304d7bbf0a4e4b"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/advanced/rk3576-qwen3.5-rkllm/README.md",
+      "sha256": "58be90c64f7b6252a9e9c8575ae4faac0243c4babb4976911ef8981cfbec4e7b"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/labs/01_ai_basics_ml/README.md",
+      "sha256": "29b26a297855df27f2fb71834328b9051734885f8bace37201702affeea9eb3a"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/labs/01_ai_basics_ml/真实任务_设备故障预警.md",
+      "sha256": "ed3a54c32241f3e5dc7e2506dc8dc974fef7de73e8821ba132719c8ae909ae85"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/labs/02_deep_learning_nn/README.md",
+      "sha256": "950df9b1735e821014509fef38bb2885a794f8ce01176f4c6882e23e97a97839"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/labs/02_deep_learning_nn/真实任务_IMU动作识别.md",
+      "sha256": "8c5b278150bd68dd27d104c32f93b076b1fdebe204de95f4d456a4f970518968"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/labs/03_pytorch_frameworks/README.md",
+      "sha256": "89998b8b1dd472ce1c3221b4a490ca8cfbad896f9c34a811c3ddd72ef1f26fa1"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/labs/03_pytorch_frameworks/真实任务_模型交付包审计.md",
+      "sha256": "f15a5720188efa86e64c101d2e5688c4cfeb9475b315a7e70d233f01abc29813"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/01_AI基础与机器学习.md",
+      "sha256": "74aa89614cc28b4fb333d6c3ad8bec1e2d558f33ef25c8221af857451ca70dcf"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/02_深度学习与神经网络.md",
+      "sha256": "c521527b5ab19e250acd13dca94d47ab6f4dc671a26f40613ecf4272cd4efb7f"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/03_PyTorch与模型框架.md",
+      "sha256": "7e4e8856ea513a8197101dd16207e23c166fac05ce33a7ae50a6ef5575e4ecbf"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/04_Transformer与LLM.md",
+      "sha256": "3121bc7e6d5bec8459e749ec320b28f46aafdc13b294524512d7137ae861f94c"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/05_LLM推理原理.md",
+      "sha256": "7c48052e0e1de416222b97f16680a3ab67a5fa35165e2a028c00382dc78f38bf"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/06_AI_Agent与RAG.md",
+      "sha256": "4402ed24bc06d6c991db32b477b073810670c4a91dbe1fc8e86cb29ca032e256"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/07_llama.cpp.md",
+      "sha256": "f8f9e9dc1f09ce2c94ab9a64beadd7674958192af518fcf235565e60018c79fc"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/08_vLLM与MLC-LLM.md",
+      "sha256": "32b3f6b986f0d7b7524cbe91cfe4d415cb375f57f9522371cfd3265f395af777"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/09_AI_Compiler与TVM.md",
+      "sha256": "a5aafbedc98e830b6dbfe6e7594eca04a2cc020840d1608da18c5ce9b0a1247b"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/10_GPU_Kernel与FlashAttention.md",
+      "sha256": "b663463d90adff0cd19a4e39f81cfa308bb531694dbce54ca788e0b52f30d72b"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/11_RKNN与Rockchip_NPU.md",
+      "sha256": "7440bc480b8500903989a862b7804b0da2de2985672a2db1991c4288b5ae2b50"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/12_RKLLM与端侧LLM部署.md",
+      "sha256": "f96cc6f9dd520c11813f998b9c080a88e9ef77996bf287d6ccdca4e7a9ad187f"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/13_RK3576端侧AI实践.md",
+      "sha256": "c4b9b110ab1ca96ad107ee3e8303c6c88bcaddd0ff74bb3ffd1b4004fb985d25"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/AI学习路线图_v0.2.md",
+      "sha256": "ef5d9d2b1b09130fc9dda2f2355946f1ac2aefc0e353cfbad88fe3e0f979ddf4"
+    },
+    {
+      "path": "ai-to-edge-deployment-main/从AI基础到端侧部署优化/RK3576本地多模态设备助手/00_项目总纲与Linux系统学习路线.md",
+      "sha256": "91f1b152104c267efdf4ad34f335fa811e442a0e89d18d10f30fb98875eed785"
+    }
+  ]
+}

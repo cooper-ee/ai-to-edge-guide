@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "checks": {
+    "ml_loss_decreased": true,
+    "ml_heldout_accuracy_above_85_percent": true,
+    "gradient_finite_difference": true,
+    "numpy_cached_attention": true,
+    "numpy_blocked_attention": true,
+    "memory_MiB_units": true,
+    "retrieval_toy_questions": true,
+    "unknown_tool_rejected": true,
+    "tiled_matmul_tail": true,
+    "classifier_heldout_accuracy_above_85_percent": true,
+    "onnx_logits_error": true,
+    "onnx_tested_batch_sizes": true,
+    "tiny_lm_training_loss_decreased": true,
+    "tiny_lm_cached_logits": true,
+    "tiny_lm_no_future_leakage": true,
+    "static_onnx_checker_and_numerical_probes": true
+  },
+  "static_onnx_max_abs_error": 1.9073486328125e-06,
+  "scope": "Local educational experiments; no GPU/NPU/third-party-runtime performance certification"
+}
