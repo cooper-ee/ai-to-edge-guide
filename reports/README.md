@@ -1,6 +1,6 @@
 # 本次实际验证记录
 
-验证日期：2026-10-19。本目录保存实际运行生成的原始数据，不用模拟值替代真实硬件结果。运行范围是 Windows CPU；环境虽然安装了带 CUDA 的 PyTorch wheel，本项目代码没有把张量或模型移到 GPU。
+基础实验验证日期：2026-10-19；数学排版与文档回归日期：2026-10-20。本目录保存实际运行生成的原始数据，不用模拟值替代真实硬件结果。运行范围是 Windows CPU；环境虽然安装了带 CUDA 的 PyTorch wheel，本项目代码没有把张量或模型移到 GPU。
 
 ## 环境与依赖
 
@@ -11,22 +11,24 @@ Python 3.10.20；NumPy 2.2.6；PyTorch 2.11.0+cu128；ONNX 1.23.2；ONNX Runtime
 | 检查 | 本次结果 | 说明 |
 |---|---|---|
 | NumPy 逻辑回归 | 测试准确率约 0.9722 | 900条合成样本，非真实业务 |
-| 有限差分梯度 | 最大误差约 $2.70\times10^{-12}$ | float64，epsilon=$10^{-5}$ |
-| 缓存 attention | 最大误差约 $3.33\times10^{-16}$ | NumPy 数值参考 |
-| 分块 online attention | 最大误差约 $4.44\times10^{-16}$ | 不代表 GPU Kernel 速度 |
+| 有限差分梯度 | 最大误差约 $`2.70\times10^{-12}`$ | float64，epsilon=$`10^{-5}`$ |
+| 缓存 attention | 最大误差约 $`3.33\times10^{-16}`$ | NumPy 数值参考 |
+| 分块 online attention | 最大误差约 $`4.44\times10^{-16}`$ | 不代表 GPU Kernel 速度 |
 | 合成 KV 配置 | 48 MiB / 混合full层部分12 MiB | 不同于真实 Qwen 配置 |
 | 调度模拟 | 静态16 tick、连续12 tick | 没有真实系统开销 |
 | 词项检索 | 4题 Recall@2=1 | 小型固定检索题，无LLM生成 |
 | PyTorch MLP | 114参数，测试准确率约0.9556 | 验证损失选择checkpoint |
-| 动态ONNX | 最大绝对误差 $9.54\times10^{-7}$ | batch=1/7/32/64，另对封存数据评价 |
-| 微型LM | loss约3.48→0.91，缓存logits误差约 $3.81\times10^{-6}$ | 100步玩具语料；非泛化评测 |
+| 动态ONNX | 最大绝对误差 $`9.54\times10^{-7}`$ | batch=1/7/32/64，另对封存数据评价 |
+| 微型LM | loss约3.48→0.91，缓存logits误差约 $`3.81\times10^{-6}`$ | 100步玩具语料；非泛化评测 |
 | 因果性 | 改未来输入，较早logits最大差0 | 检查未来信息泄漏 |
 | 静态ONNX | checker与10组独立输入数值对照通过 | 不代表RKNN转换与NPU通过 |
-| 测试 | 8项通过 | 包括真实HTTP 200/400与数值/调度边界 |
+| 测试 | 16项通过 | 包括HTTP、数值/调度边界和8项数学文档回归 |
 | 浏览器 | 桌面1440×1080、手机390×844检查通过 | 交互计算、无JS错误、SVG文本未越界 |
 | 离线阅读 | 阻断HTTP/HTTPS后149个公式渲染通过 | 使用本地MathJax SVG组件 |
+| GitHub数学解析 | 169个公式均识别，内容逐项一致 | GitHub Markdown API实际响应 |
+| GitHub转换结果的本地排版 | 169个公式，0个错误、0个未渲染节点 | API生成HTML在本地MathJax中检查；未发布远程文件 |
 
-具体状态与结果见 [audit.json](audit.json)、[browser-check.json](browser-check.json)、[tests.txt](tests.txt)、[docs-check.json](docs-check.json)。
+具体状态与结果见 [audit.json](audit.json)、[browser-check.json](browser-check.json)、[github-math-check.json](github-math-check.json)、[github-browser-check.json](github-browser-check.json)、[tests.txt](tests.txt)、[docs-check.json](docs-check.json)。
 
 ## 原始文件
 

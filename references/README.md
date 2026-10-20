@@ -41,6 +41,6 @@ BibTeX 文件见 [papers.bib](papers.bib)。P11 的下载版是先行技术报�
 | 混合模型配置 | [Qwen3.5-2B config](https://huggingface.co/Qwen/Qwen3.5-2B/blob/main/config.json) | 只把配置可证实的字段当事实 |
 | 工具协议 | [MCP 2025-06-18](https://modelcontextprotocol.io/specification/2025-06-18) | 协议支持不替代应用授权 |
 
-## 参考项目
+## 版权与分发
 
-[yunxiao11xie/ai-to-edge-deployment](https://github.com/yunxiao11xie/ai-to-edge-deployment)，附件提供版本；完整保留的 [MIT 通知](original-project-LICENSE.txt)。主题映射和差异见 [来源审阅](../docs/source-review.md)。本项目未重新分发第三方论文 PDF、图片或模型权重。
+本项目未重新分发第三方论文 PDF、图片或模型权重。第三方组件许可集中保存在 [许可声明](../licenses/THIRD_PARTY_NOTICES.txt) 与 `vendor/`，学术引用按上述原论文标注。

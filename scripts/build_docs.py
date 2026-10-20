@@ -4,6 +4,10 @@ import html
 import os
 import re
 from urllib.parse import urlsplit
+try:
+    from .markdown_math import for_html
+except ImportError:
+    from markdown_math import for_html
 
 ROOT = Path(__file__).resolve().parents[1]
 # id, slug, title, real source locations, scenario/question, flow, exercises
@@ -68,7 +72,7 @@ COURSES = [
 def build_navigation():
     intro='''# 源码课程与完整学习入口
 
-用途：用可运行实验学习 AI 模型从训练到部署的完整过程。代码快照为本项目 v1.0；交付文件指纹见 `reports/file-manifest.json`。运行环境和测量范围见 [验证记录](reports/README.md)。
+用途：用可运行实验学习 AI 模型从训练到部署的完整过程。代码快照为本项目 v1.1；交付文件指纹见 `reports/file-manifest.json`。运行环境和测量范围见 [验证记录](reports/README.md)。
 
 前置：Python 模块/环境、矩阵乘法和基础导数；不熟悉时从第 00 课补起。正文均为已展开课程。外部 Runtime、GPU/NPU 与多模态硬件部分是学习手册/适配模板，尚未在本交付验证，不补造调用链或性能。
 
@@ -88,14 +92,11 @@ def build_navigation():
 
 def html_body(source,base):
     import markdown
-    math = []
-    def stash(m):
-        math.append(m.group(0))
-        return f'ZZMATHPLACEHOLDER{len(math)-1}ZZ'
-    # Preserve raw LaTeX before Markdown interprets underscores/backslashes.
-    source = re.sub(r'\$\$[\s\S]*?\$\$|(?<!\$)\$(?!\$)[^\n$]+?\$(?!\$)',stash,source)
+    source,replacements=for_html(source)
     body=markdown.markdown(source,extensions=['tables','fenced_code'])
-    for i,s in enumerate(math):body=body.replace(f'ZZMATHPLACEHOLDER{i}ZZ',html.escape(s))
+    for token,replacement,kind in replacements:
+        if kind=='display':body=body.replace('<p>'+token+'</p>',replacement)
+        body=body.replace(token,replacement)
     def relocate(match):
         attr,value=match.groups()
         if value.startswith('#') or urlsplit(value).scheme:
@@ -116,7 +117,7 @@ def build_reader():
     nav=''.join(f'<a href="#{id}">{html.escape(title)}</a>' for id,title,_ in chapters)
     body=''.join(f'<article id="{id}">{html_body(p.read_text(encoding="utf8"),p.parent)}</article>' for id,_,p in chapters)
     css='''*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:#f5f8fa;color:#183548;font:16px/1.95 "Segoe UI","Microsoft YaHei",sans-serif}aside{position:fixed;inset:0 auto 0 0;width:275px;overflow:auto;padding:24px 20px;background:#102f42;color:#cae0ea}aside>a{display:block;font-size:12px;padding:7px 0;border-bottom:1px solid #284858}aside .logo{font-size:20px;font-weight:700;margin-bottom:22px;color:#7bd5d1}main{max-width:1150px;margin:0 auto 0 295px;padding:35px 50px}article{background:white;border:1px solid #dce6eb;border-radius:14px;padding:35px 42px;margin-bottom:32px;overflow-wrap:anywhere}h1{font-size:29px;line-height:1.5}h2{font-size:23px;margin-top:35px;color:#087d81}h3{font-size:19px}a{color:#087d81;text-decoration:none}aside a{color:#cae0ea}img{max-width:100%;height:auto}pre{background:#edf3f6;padding:18px;border-radius:8px;overflow:auto;font-size:13px;line-height:1.8}code{font-family:Consolas,monospace;font-size:.9em}table{border-collapse:collapse;width:100%;font-size:13px;display:block;overflow:auto}th,td{border:1px solid #dce5eb;text-align:left;padding:10px}th{background:#edf5f6}blockquote{border-left:3px solid #07878b;padding-left:17px;color:#59707d;margin-left:0}.note{color:#5e7584;font-size:12px;padding:0 5px 20px}summary{cursor:pointer;color:#67808e;font-size:12px}mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;padding:10px 0}@media(max-width:900px){aside{position:static;width:auto;max-height:220px}main{margin:0;padding:20px}article{padding:22px}h1{font-size:25px}}@media print{aside,.note{display:none}main{margin:0;padding:0}article{border:0;page-break-before:always}}'''
-    head='''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>完整教程 · AI to Edge</title><style>'''+css+'''</style><script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="vendor/mathjax/tex-svg.js"></script></head><body>'''
+    head='''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>完整教程 · AI to Edge</title><style>'''+css+r'''</style><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="vendor/mathjax/tex-svg.js"></script></head><body>'''
     page=head+'<aside><a class="logo" href="index.html">← AI / EDGE 实验台</a>'+nav+'</aside><main><p class="note">正文与公式均可离线阅读；流程图源在 GitHub 可渲染，主线另附 SVG。MathJax 许可见 vendor/mathjax/LICENSE。</p>'+body+'</main></body></html>'
     (ROOT/'reader.html').write_text(page,encoding='utf8')
 

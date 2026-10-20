@@ -16,6 +16,7 @@
 
 学框架之前，先弄清模型在做什么；测速度之前，先证明输出正确；接硬件之前，先把输入契约和版本锁定。每课按“问题 → 直觉 → 公式/数据流 → 源码 → 实验 → 过关任务”组织。数学例子和错误反例帮助建立自己的判断，而不是背术语清单。
 
+课程围绕完整 CPU 模型交付主线展开，并提供独立量化课程、数值等价验证、混合架构账本和实验状态说明。[本教程的理解与取舍](docs/understanding-and-decisions.md) · [版本更新说明](docs/release-notes.md)
 
 ## 学习路线
 
@@ -87,9 +88,10 @@ tests/            数值约束与真实 HTTP 集成测试
 reports/          本次验证记录与原始测量
 templates/        版本矩阵和实验报告
 references/       可核查文献、BibTeX 与来源保留
+licenses/         第三方许可声明
 index.html        无需服务端的交互实验台
 tutorial.md       按输入到输出组织的源码课程入口
 practice.md       配套理解与扩展题
 ```
 
-贡献前请读 [CONTRIBUTING](CONTRIBUTING.md)。代码与原创文档按 [MIT](LICENSE) 发布；参考项目的许可保留在 [references/original-project-LICENSE.txt](references/original-project-LICENSE.txt)，第三方论文、软件与模型遵循各自许可。
+贡献前请读 [CONTRIBUTING](CONTRIBUTING.md)。代码与原创文档按 [MIT](LICENSE) 发布；第三方组件遵循各自许可，声明集中保留在 `licenses/` 和 `vendor/`。论文、软件与模型遵循各自许可。

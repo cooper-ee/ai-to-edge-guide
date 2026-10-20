@@ -1,8 +1,10 @@
 {
-  "document_files": 36,
+  "document_files": 38,
   "local_links_checked": 333,
-  "python_files_parsed": 16,
+  "python_files_parsed": 19,
   "courses": 18,
   "svg_files": 7,
+  "inline_math": 140,
+  "display_math": 29,
   "errors": []
 }

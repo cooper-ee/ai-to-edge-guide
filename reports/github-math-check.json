@@ -1,0 +1,86 @@
+{
+  "status": 200,
+  "files": [
+    {
+      "path": "docs/00-foundations.md",
+      "formulae": 6
+    },
+    {
+      "path": "docs/01-machine-learning.md",
+      "formulae": 10
+    },
+    {
+      "path": "docs/02-neural-networks.md",
+      "formulae": 20
+    },
+    {
+      "path": "docs/03-export-and-correctness.md",
+      "formulae": 2
+    },
+    {
+      "path": "docs/04-transformer.md",
+      "formulae": 19
+    },
+    {
+      "path": "docs/05-inference-and-cache.md",
+      "formulae": 20
+    },
+    {
+      "path": "docs/06-quantization.md",
+      "formulae": 18
+    },
+    {
+      "path": "docs/07-rag-and-agent.md",
+      "formulae": 1
+    },
+    {
+      "path": "docs/09-serving-and-runtimes.md",
+      "formulae": 1
+    },
+    {
+      "path": "docs/10-compiler.md",
+      "formulae": 11
+    },
+    {
+      "path": "docs/11-kernel-and-flashattention.md",
+      "formulae": 22
+    },
+    {
+      "path": "docs/12-rknn.md",
+      "formulae": 2
+    },
+    {
+      "path": "docs/14-linux-and-integration.md",
+      "formulae": 1
+    },
+    {
+      "path": "docs/15-benchmark-and-debug.md",
+      "formulae": 6
+    },
+    {
+      "path": "docs/17-model-anatomy.md",
+      "formulae": 4
+    },
+    {
+      "path": "docs/glossary.md",
+      "formulae": 11
+    },
+    {
+      "path": "docs/knowledge-map.md",
+      "formulae": 6
+    },
+    {
+      "path": "docs/math-formatting.md",
+      "formulae": 3
+    },
+    {
+      "path": "reports/README.md",
+      "formulae": 6
+    }
+  ],
+  "source_formulae": 169,
+  "github_math_nodes": 169,
+  "formula_content_matches": true,
+  "verification_scope": "GitHub Markdown API parsing; local browser math typesetting checked separately",
+  "remote_repository_updated": false
+}

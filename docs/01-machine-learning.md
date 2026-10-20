@@ -10,26 +10,35 @@
 
 ## 从线性打分到概率
 
-令 $z_i=w^\top x_i+b$，用 sigmoid 得到正类概率：
+令 $`z_i=w^\top x_i+b`$，用 sigmoid 得到正类概率：
 
-$$p_i=\sigma(z_i)=\frac{1}{1+e^{-z_i}}.$$
+```math
+p_i=\sigma(z_i)=\frac{1}{1+e^{-z_i}}.
+```
 
-若标签 $y_i\in\{0,1\}$，单样本似然是 $p_i^{y_i}(1-p_i)^{1-y_i}$。对所有样本的似然取负对数并求平均：
 
-$$\mathcal L=-\frac1n\sum_i[y_i\log p_i+(1-y_i)\log(1-p_i)].$$
+若标签 $`y_i\in\{0,1\}`$，单样本似然是 $`p_i^{y_i}(1-p_i)^{1-y_i}`$。对所有样本的似然取负对数并求平均：
+
+```math
+\mathcal L=-\frac{1}{n}\sum_i[y_i\log p_i+(1-y_i)\log(1-p_i)].
+```
+
 
 这就是二元交叉熵。大白话：真答案是“是”，模型却只愿意给 0.01 的概率，就要受到更大惩罚。不要先做 0/1 判决再算损失，否则梯度信息被截断。代码使用等价但数值稳定的 `logaddexp(0,z)-y*z`。
 
 沿 sigmoid 和对数的导数化简，有：
 
-$$\frac{\partial\mathcal L}{\partial w}=\frac1nX^\top(p-y),\qquad
-\frac{\partial\mathcal L}{\partial b}=\frac1n\sum_i(p_i-y_i).$$
+```math
+\frac{\partial\mathcal L}{\partial w}=\frac{1}{n}X^\top(p-y),\qquad
+\frac{\partial\mathcal L}{\partial b}=\frac{1}{n}\sum_i(p_i-y_i).
+```
 
-梯度下降更新 $w\leftarrow w-\eta\nabla_w\mathcal L$。当一个正类样本被低估时，$p-y<0$，更新会使该样本的分数有增大的趋势。这个符号检查能帮助发现推导错误。
+
+梯度下降更新 $`w\leftarrow w-\eta\nabla_w\mathcal L`$。当一个正类样本被低估时，$`p-y\lt 0`$，更新会使该样本的分数有增大的趋势。这个符号检查能帮助发现推导错误。
 
 ## 划分必须先于拟合预处理
 
-标准化 $x'=(x-\mu)/\sigma$ 中的均值和标准差只在训练集拟合，然后原样用于验证、测试和服务。如果先用全部样本计算统计量，测试集就参与了训练流程。时序数据还应按时间切分；同一人的多个片段应按人分组；随机切分不是普适规则。
+标准化 $`x'=(x-\mu)/\sigma`$ 中的均值和标准差只在训练集拟合，然后原样用于验证、测试和服务。如果先用全部样本计算统计量，测试集就参与了训练流程。时序数据还应按时间切分；同一人的多个片段应按人分组；随机切分不是普适规则。
 
 ```mermaid
 flowchart LR
@@ -48,9 +57,12 @@ flowchart LR
 
 ## 哪个指标在回答你的问题
 
-$$\text{Precision}=\frac{TP}{TP+FP},\quad
+```math
+\text{Precision}=\frac{TP}{TP+FP},\quad
 \text{Recall}=\frac{TP}{TP+FN},\quad
-F_1=\frac{2TP}{2TP+FP+FN}.$$
+F_1=\frac{2TP}{2TP+FP+FN}.
+```
+
 
 若故障样本只占 1%，永远预测正常也有 99% 准确率。漏报成本高时关注 recall；误报成本高时关注 precision；阈值必须在验证集选择。F1 不包含真负类，不能单独说明全部错误结构。概率需要用于决策时，还应检查校准。
 

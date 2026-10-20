@@ -58,6 +58,9 @@ def main():
         assert page.locator('mjx-merror, [data-mml-node="merror"]').count()==0
         page.locator('#c11').scroll_into_view_if_needed()
         page.screenshot(path=str(args.output/'reader.png'))
+        for chapter in ['c02','c04','c06','knowledge']:
+            page.locator('#'+chapter).evaluate('(element)=>element.scrollIntoView({block:"start"})')
+            page.screenshot(path=str(args.output/f'reader-{chapter}.png'))
         # Detect clipping in all static SVG text using the actual browser font metrics.
         svg_checks=[]
         for svg in (ROOT/'assets').glob('*.svg'):

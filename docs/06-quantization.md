@@ -8,29 +8,35 @@
 
 ## 一把刻度尺的推导
 
-仿射量化用整数 $q$ 表示浮点数 $x$：
+仿射量化用整数 $`q`$ 表示浮点数 $`x`$：
 
-$$q=\operatorname{clip}\left(\operatorname{round}(x/s)+z,q_{min},q_{max}\right),\qquad
-\hat x=s(q-z).$$
+```math
+q=\mathrm{clip}\left(\mathrm{round}(x/s)+z,q_{min},q_{max}\right),\qquad
+\hat x=s(q-z).
+```
 
-$s>0$ 是刻度间距，$z$ 是零点。非对称量化常取 $s=(x_{max}-x_{min})/(q_{max}-q_{min})$，再把零点舍入并裁剪到整数范围。这样部署中的零填充值才有准确对应。[Jacob 等，2018，CVPR，PDF](https://arxiv.org/pdf/1712.05877)
 
-本项目用简化的对称量化：$z=0$，$q\in[-Q,Q]$，$Q=2^{b-1}-1$，$s=\max|x|/Q$。INT8 用 $[-127,127]$；INT4 用 $[-7,7]$，有意不使用最负的编码。没有裁剪时，舍入误差通常满足 $|x-\hat x|\le s/2$。超出校准范围后，误差可以远大于这个界。
+$`s\gt 0`$ 是刻度间距，$`z`$ 是零点。非对称量化常取 $`s=(x_{max}-x_{min})/(q_{max}-q_{min})`$，再把零点舍入并裁剪到整数范围。这样部署中的零填充值才有准确对应。[Jacob 等，2018，CVPR，PDF](https://arxiv.org/pdf/1712.05877)
+
+本项目用简化的对称量化：$`z=0`$，$`q\in[-Q,Q]`$，$`Q=2^{b-1}-1`$，$`s=\max|x|/Q`$。INT8 用 $`[-127,127]`$；INT4 用 $`[-7,7]`$，有意不使用最负的编码。没有裁剪时，舍入误差通常满足 $`|x-\hat x|\le s/2`$。超出校准范围后，误差可以远大于这个界。
 
 大白话：量化像用格子纸记坐标。格子越大，细节越容易丢；范围铺得越宽，同样数量的格子就越粗。
 
 ## 一个异常值为什么影响整层
 
-数组 `[-0.2,0.1,0.2,30]` 若共享一个 INT4 scale，则 $s=30/7\approx4.29$，前三个数几乎全舍入成 0。逐通道 scale 让数值范围不同的输出通道各用自己的尺子；分组 scale 在精度和元数据成本之间折中。
+数组 `[-0.2,0.1,0.2,30]` 若共享一个 INT4 scale，则 $`s=30/7\approx4.29`$，前三个数几乎全舍入成 0。逐通道 scale 让数值范围不同的输出通道各用自己的尺子；分组 scale 在精度和元数据成本之间折中。
 
 ```powershell
 python -m edge_ai_labs --lab quantization --seed 42
 ```
 
-`math_labs.py::quantization` 生成各行尺度不同的 $W\in\mathbb R^{32\times64}$，加入异常值，再对比 INT8 全张量、INT8 逐通道、INT4 逐通道和 INT4 裁剪。输出同时包含：
+`math_labs.py::quantization` 生成各行尺度不同的 $`W\in\mathbb R^{32\times64}`$，加入异常值，再对比 INT8 全张量、INT8 逐通道、INT4 逐通道和 INT4 裁剪。输出同时包含：
 
-$$\operatorname{MSE}_W=\frac{\|W-\hat W\|_F^2}{|W|},\qquad
-\operatorname{MSE}_Y=\frac{\|XW^\top-X\hat W^\top\|_F^2}{|Y|}.$$
+```math
+\mathrm{MSE}_W=\frac{\|W-\hat W\|_F^2}{|W|},\qquad
+\mathrm{MSE}_Y=\frac{\|XW^\top-X\hat W^\top\|_F^2}{|Y|}.
+```
+
 
 默认样例中裁剪会伤害那个真实参与计算的异常值，输出误差反而增大。这是有意保留的反例：不能把“去异常值”写成永远有益的口诀。输入分布影响输出误差，权重 MSE 不是最终质量指标。
 
@@ -49,7 +55,7 @@ AWQ、GPTQ 等不是“同一条 round 公式换个名字”；它们针对误�
 
 若每次先把全模型解包、反量化成 FP32 再调用普通矩阵乘法，可能增加临时存储和搬运。高效实现通常在合适的计算块里解码、重标定与累积，而不是要求“永远不能反量化”。当模型很小、batch 改变、内核不支持或 CPU/NPU 数据往返占主导时，量化收益会被开销抵消。
 
-W4A16 只描述权重与激活的主要位宽组合，不规定全部张量、scale、缓存与累加精度。对 $P$ 个参数，$Pb/8$ 只是裸数据理想字节数；还要考虑分组参数、padding、保留高精度层与封装。
+W4A16 只描述权重与激活的主要位宽组合，不规定全部张量、scale、缓存与累加精度。对 $`P`$ 个参数，$`Pb/8`$ 只是裸数据理想字节数；还要考虑分组参数、padding、保留高精度层与封装。
 
 ## 阅读链与验证边界
 

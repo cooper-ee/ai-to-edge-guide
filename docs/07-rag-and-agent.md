@@ -14,9 +14,12 @@ RAG 把外部证据放进生成过程；Agent 把模型的建议接到可执行�
 
 本实验用中英文词项和中文双字片段构建简单 TF-IDF：
 
-$$\operatorname{idf}(t)=\log\frac{1+N}{1+df(t)}+1,\quad
-v_{d,t}=tf(t,d)\operatorname{idf}(t),\quad
-\operatorname{score}(q,d)=\frac{v_q^\top v_d}{\|v_q\|\|v_d\|}.$$
+```math
+\mathrm{idf}(t)=\log\frac{1+N}{1+df(t)}+1,\quad
+v_{d,t}=tf(t,d)\mathrm{idf}(t),\quad
+\mathrm{score}(q,d)=\frac{v_q^\top v_d}{\|v_q\|\|v_d\|}.
+```
+
 
 这是词项匹配基线，不是语义 embedding。中文分词也只做了教学简化。优点是无需网络或模型即可检查全部权重；缺点是同义改写、跨语言和长距离语义很弱。
 

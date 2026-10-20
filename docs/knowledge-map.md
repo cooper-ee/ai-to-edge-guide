@@ -35,11 +35,11 @@
 
 | 公式 | 使用前检查 |
 |---|---|
-| $Y=XW^\top+b$ | 权重存放约定和输入轴一致 |
-| $\mathrm{softmax}(QK^\top/\sqrt d)V$ | softmax 轴、mask、Q/K 维度 |
-| $M_{KV}=2BTH_{kv}d_hLs$ | 是否全注意力、实际层数/长度/精度 |
-| $P\le\min(P_{peak},BW\cdot I)$ | 同一存储层级、单位、工作负载与持续上限 |
-| $q=\mathrm{clip}(\mathrm{round}(x/s)+z)$ | 范围、zero point、舍入规则、裁剪 |
-| $N=\lambda W$ | 稳定系统、相同边界、长期平均 |
+| $`Y=XW^\top+b`$ | 权重存放约定和输入轴一致 |
+| $`\mathrm{softmax}(QK^\top/\sqrt d)V`$ | softmax 轴、mask、Q/K 维度 |
+| $`M_{KV}=2BTH_{kv}d_hLs`$ | 是否全注意力、实际层数/长度/精度 |
+| $`P\le\min(P_{peak},BW\cdot I)`$ | 同一存储层级、单位、工作负载与持续上限 |
+| $`q=\mathrm{clip}(\mathrm{round}(x/s)+z)`$ | 范围、zero point、舍入规则、裁剪 |
+| $`N=\lambda W`$ | 稳定系统、相同边界、长期平均 |
 
 推导与具体反例见各课；[公式与术语速查](glossary.md) 用于回看，不代替完整学习。版本敏感事实统一从 [资料索引](../references/README.md) 跳转官方来源。

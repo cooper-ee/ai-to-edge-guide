@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>完整教程 · AI to Edge</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:#f5f8fa;color:#183548;font:16px/1.95 "Segoe UI","Microsoft YaHei",sans-serif}aside{position:fixed;inset:0 auto 0 0;width:275px;overflow:auto;padding:24px 20px;background:#102f42;color:#cae0ea}aside>a{display:block;font-size:12px;padding:7px 0;border-bottom:1px solid #284858}aside .logo{font-size:20px;font-weight:700;margin-bottom:22px;color:#7bd5d1}main{max-width:1150px;margin:0 auto 0 295px;padding:35px 50px}article{background:white;border:1px solid #dce6eb;border-radius:14px;padding:35px 42px;margin-bottom:32px;overflow-wrap:anywhere}h1{font-size:29px;line-height:1.5}h2{font-size:23px;margin-top:35px;color:#087d81}h3{font-size:19px}a{color:#087d81;text-decoration:none}aside a{color:#cae0ea}img{max-width:100%;height:auto}pre{background:#edf3f6;padding:18px;border-radius:8px;overflow:auto;font-size:13px;line-height:1.8}code{font-family:Consolas,monospace;font-size:.9em}table{border-collapse:collapse;width:100%;font-size:13px;display:block;overflow:auto}th,td{border:1px solid #dce5eb;text-align:left;padding:10px}th{background:#edf5f6}blockquote{border-left:3px solid #07878b;padding-left:17px;color:#59707d;margin-left:0}.note{color:#5e7584;font-size:12px;padding:0 5px 20px}summary{cursor:pointer;color:#67808e;font-size:12px}mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;padding:10px 0}@media(max-width:900px){aside{position:static;width:auto;max-height:220px}main{margin:0;padding:20px}article{padding:22px}h1{font-size:25px}}@media print{aside,.note{display:none}main{margin:0;padding:0}article{border:0;page-break-before:always}}</style><script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="vendor/mathjax/tex-svg.js"></script></head><body><aside><a class="logo" href="index.html">← AI / EDGE 实验台</a><a href="#roadmap">学习路线</a><a href="#c00">00 先搭一张能用于排错的地图</a><a href="#c01">01 机器学习：先证明模型学到了可迁移的规律</a><a href="#c02">02 神经网络：把学参数拆成四步</a><a href="#c03">03 模型交付：导出成功只是第一道门</a><a href="#c04">04 Transformer：按张量形状理解注意力</a><a href="#c05">05 LLM推理：用时间线和内存账理解快慢</a><a href="#c06">06 量化：误差、存储和执行</a><a href="#c07">07 RAG与Agent：知识从哪里来，动作由谁执行</a><a href="#c08">08 llama.cpp：真实本地语言模型</a><a href="#c09">09 Serving：从能生成到多人同时用</a><a href="#c10">10 AI编译器：计算不变，安排可以不同</a><a href="#c11">11 GPU Kernel与FlashAttention：少搬中间结果</a><a href="#c12">12 RKNN与NPU：把兼容性当完整链路检查</a><a href="#c13">13 RKLLM：产物、状态与生命周期</a><a href="#c14">14 Linux与系统集成：可观测服务</a><a href="#c15">15 基准与排错：用证据决定优化方向</a><a href="#c16">16 综合项目：可复现作品</a><a href="#c17">17 进阶：混合注意力与多模态解剖</a><a href="#knowledge">知识体系</a><a href="#decisions">理解与取舍</a><a href="#references">论文与官方资料</a></aside><main><p class="note">正文与公式均可离线阅读；流程图源在 GitHub 可渲染，主线另附 SVG。MathJax 许可见 vendor/mathjax/LICENSE。</p><article id="roadmap"><h1>从零到端侧：按能力依赖走，而不是按框架数量走</h1>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>完整教程 · AI to Edge</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:#f5f8fa;color:#183548;font:16px/1.95 "Segoe UI","Microsoft YaHei",sans-serif}aside{position:fixed;inset:0 auto 0 0;width:275px;overflow:auto;padding:24px 20px;background:#102f42;color:#cae0ea}aside>a{display:block;font-size:12px;padding:7px 0;border-bottom:1px solid #284858}aside .logo{font-size:20px;font-weight:700;margin-bottom:22px;color:#7bd5d1}main{max-width:1150px;margin:0 auto 0 295px;padding:35px 50px}article{background:white;border:1px solid #dce6eb;border-radius:14px;padding:35px 42px;margin-bottom:32px;overflow-wrap:anywhere}h1{font-size:29px;line-height:1.5}h2{font-size:23px;margin-top:35px;color:#087d81}h3{font-size:19px}a{color:#087d81;text-decoration:none}aside a{color:#cae0ea}img{max-width:100%;height:auto}pre{background:#edf3f6;padding:18px;border-radius:8px;overflow:auto;font-size:13px;line-height:1.8}code{font-family:Consolas,monospace;font-size:.9em}table{border-collapse:collapse;width:100%;font-size:13px;display:block;overflow:auto}th,td{border:1px solid #dce5eb;text-align:left;padding:10px}th{background:#edf5f6}blockquote{border-left:3px solid #07878b;padding-left:17px;color:#59707d;margin-left:0}.note{color:#5e7584;font-size:12px;padding:0 5px 20px}summary{cursor:pointer;color:#67808e;font-size:12px}mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;padding:10px 0}@media(max-width:900px){aside{position:static;width:auto;max-height:220px}main{margin:0;padding:20px}article{padding:22px}h1{font-size:25px}}@media print{aside,.note{display:none}main{margin:0;padding:0}article{border:0;page-break-before:always}}</style><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="vendor/mathjax/tex-svg.js"></script></head><body><aside><a class="logo" href="index.html">← AI / EDGE 实验台</a><a href="#roadmap">学习路线</a><a href="#c00">00 先搭一张能用于排错的地图</a><a href="#c01">01 机器学习：先证明模型学到了可迁移的规律</a><a href="#c02">02 神经网络：把学参数拆成四步</a><a href="#c03">03 模型交付：导出成功只是第一道门</a><a href="#c04">04 Transformer：按张量形状理解注意力</a><a href="#c05">05 LLM推理：用时间线和内存账理解快慢</a><a href="#c06">06 量化：误差、存储和执行</a><a href="#c07">07 RAG与Agent：知识从哪里来，动作由谁执行</a><a href="#c08">08 llama.cpp：真实本地语言模型</a><a href="#c09">09 Serving：从能生成到多人同时用</a><a href="#c10">10 AI编译器：计算不变，安排可以不同</a><a href="#c11">11 GPU Kernel与FlashAttention：少搬中间结果</a><a href="#c12">12 RKNN与NPU：把兼容性当完整链路检查</a><a href="#c13">13 RKLLM：产物、状态与生命周期</a><a href="#c14">14 Linux与系统集成：可观测服务</a><a href="#c15">15 基准与排错：用证据决定优化方向</a><a href="#c16">16 综合项目：可复现作品</a><a href="#c17">17 进阶：混合注意力与多模态解剖</a><a href="#knowledge">知识体系</a><a href="#decisions">理解与取舍</a><a href="#references">论文与官方资料</a></aside><main><p class="note">正文与公式均可离线阅读；流程图源在 GitHub 可渲染，主线另附 SVG。MathJax 许可见 vendor/mathjax/LICENSE。</p><article id="roadmap"><h1>从零到端侧：按能力依赖走，而不是按框架数量走</h1>
 <p>先完成一条可运行闭环，再选择应用、Serving 或硬件方向加深。路线的结束条件是你能解释并复现实验，不是读完页面。</p>
 <p><img alt="完整路线图" src="assets/roadmap.svg" /></p>
 <h2>三种起点</h2>
@@ -163,7 +163,7 @@
 <tr>
 <td>内存</td>
 <td>区分容量、带宽和缓存</td>
-<td>1 GiB 是 $2^{30}$ 字节</td>
+<td>1 GiB 是 <span class="math-inline">\(2^{30}\)</span> 字节</td>
 </tr>
 <tr>
 <td>Linux</td>
@@ -177,7 +177,7 @@
 </tr>
 </tbody>
 </table>
-<p>以线性层为例：$X\in\mathbb R^{B\times K}$，PyTorch 风格权重 $W\in\mathbb R^{N\times K}$，$Y=XW^\top+b$。参数量为 $NK+N$。按一次乘法和一次加法计两次浮点操作，主计算量近似 $2BKN$ FLOPs。<strong>参数量不随 batch 增大，计算量会增大</strong>。内存容量决定能否放下；内存带宽决定每秒能搬多少数据；FLOP/s 决定每秒能做多少浮点运算。三者不能互相代替。</p>
+<p>以线性层为例：<span class="math-inline">\(X\in\mathbb R^{B\times K}\)</span>，PyTorch 风格权重 <span class="math-inline">\(W\in\mathbb R^{N\times K}\)</span>，<span class="math-inline">\(Y=XW^\top+b\)</span>。参数量为 <span class="math-inline">\(NK+N\)</span>。按一次乘法和一次加法计两次浮点操作，主计算量近似 <span class="math-inline">\(2BKN\)</span> FLOPs。<strong>参数量不随 batch 增大，计算量会增大</strong>。内存容量决定能否放下；内存带宽决定每秒能搬多少数据；FLOP/s 决定每秒能做多少浮点运算。三者不能互相代替。</p>
 <h2>安装与第一次运行</h2>
 <p>要求 Python 3.10+。在仓库根目录执行；先只安装 NumPy，不需要 GPU，也不下载模型：</p>
 <pre><code class="language-powershell">python -m venv .venv
@@ -215,17 +215,17 @@ python -m edge_ai_labs --lab export
 <p>机器学习不是“把数据丢进模型”。你先定义预测问题，再决定哪些信息在预测时确实可用，最后用模型没见过的数据检查它。一个简单但评估可靠的模型，比高准确率但偷看答案的模型更有价值。</p>
 <p>本项目生成 900 条四维合成样本，按 540/180/180 切成训练、验证和测试集。合成标签来自有噪声的线性规则。这里的准确率说明代码与这份数据相匹配，不代表解决了真实业务。</p>
 <h2>从线性打分到概率</h2>
-<p>令 $z_i=w^\top x_i+b$，用 sigmoid 得到正类概率：</p>
-<p>$$p_i=\sigma(z_i)=\frac{1}{1+e^{-z_i}}.$$</p>
-<p>若标签 $y_i\in\{0,1\}$，单样本似然是 $p_i^{y_i}(1-p_i)^{1-y_i}$。对所有样本的似然取负对数并求平均：</p>
-<p>$$\mathcal L=-\frac1n\sum_i[y_i\log p_i+(1-y_i)\log(1-p_i)].$$</p>
+<p>令 <span class="math-inline">\(z_i=w^\top x_i+b\)</span>，用 sigmoid 得到正类概率：</p>
+<div class="math-display">\[p_i=\sigma(z_i)=\frac{1}{1+e^{-z_i}}.\]</div>
+<p>若标签 <span class="math-inline">\(y_i\in\{0,1\}\)</span>，单样本似然是 <span class="math-inline">\(p_i^{y_i}(1-p_i)^{1-y_i}\)</span>。对所有样本的似然取负对数并求平均：</p>
+<div class="math-display">\[\mathcal L=-\frac{1}{n}\sum_i[y_i\log p_i+(1-y_i)\log(1-p_i)].\]</div>
 <p>这就是二元交叉熵。大白话：真答案是“是”，模型却只愿意给 0.01 的概率，就要受到更大惩罚。不要先做 0/1 判决再算损失，否则梯度信息被截断。代码使用等价但数值稳定的 <code>logaddexp(0,z)-y*z</code>。</p>
 <p>沿 sigmoid 和对数的导数化简，有：</p>
-<p>$$\frac{\partial\mathcal L}{\partial w}=\frac1nX^\top(p-y),\qquad
-\frac{\partial\mathcal L}{\partial b}=\frac1n\sum_i(p_i-y_i).$$</p>
-<p>梯度下降更新 $w\leftarrow w-\eta\nabla_w\mathcal L$。当一个正类样本被低估时，$p-y&lt;0$，更新会使该样本的分数有增大的趋势。这个符号检查能帮助发现推导错误。</p>
+<div class="math-display">\[\frac{\partial\mathcal L}{\partial w}=\frac{1}{n}X^\top(p-y),\qquad
+\frac{\partial\mathcal L}{\partial b}=\frac{1}{n}\sum_i(p_i-y_i).\]</div>
+<p>梯度下降更新 <span class="math-inline">\(w\leftarrow w-\eta\nabla_w\mathcal L\)</span>。当一个正类样本被低估时，<span class="math-inline">\(p-y\lt 0\)</span>，更新会使该样本的分数有增大的趋势。这个符号检查能帮助发现推导错误。</p>
 <h2>划分必须先于拟合预处理</h2>
-<p>标准化 $x&#x27;=(x-\mu)/\sigma$ 中的均值和标准差只在训练集拟合，然后原样用于验证、测试和服务。如果先用全部样本计算统计量，测试集就参与了训练流程。时序数据还应按时间切分；同一人的多个片段应按人分组；随机切分不是普适规则。</p>
+<p>标准化 <span class="math-inline">\(x&#x27;=(x-\mu)/\sigma\)</span> 中的均值和标准差只在训练集拟合，然后原样用于验证、测试和服务。如果先用全部样本计算统计量，测试集就参与了训练流程。时序数据还应按时间切分；同一人的多个片段应按人分组；随机切分不是普适规则。</p>
 <details><summary>流程图源代码（GitHub 中可直接渲染）</summary><pre><code>flowchart LR
   A[原始样本] --&gt; B{按部署场景划分}
   B --&gt; T[训练集]
@@ -240,9 +240,9 @@ python -m edge_ai_labs --lab export
   class A,T,V,E data
 </code></pre></details>
 <h2>哪个指标在回答你的问题</h2>
-<p>$$\text{Precision}=\frac{TP}{TP+FP},\quad
+<div class="math-display">\[\text{Precision}=\frac{TP}{TP+FP},\quad
 \text{Recall}=\frac{TP}{TP+FN},\quad
-F_1=\frac{2TP}{2TP+FP+FN}.$$</p>
+F_1=\frac{2TP}{2TP+FP+FN}.\]</div>
 <p>若故障样本只占 1%，永远预测正常也有 99% 准确率。漏报成本高时关注 recall；误报成本高时关注 precision；阈值必须在验证集选择。F1 不包含真负类，不能单独说明全部错误结构。概率需要用于决策时，还应检查校准。</p>
 <h2>不同算法怎么放在知识体系里</h2>
 <table>
@@ -302,16 +302,16 @@ F_1=\frac{2TP}{2TP+FP+FN}.$$</p>
 <h2>本课结论</h2>
 <p>深度网络仍然是在减少损失，只是把线性变换与非线性组合成更丰富的函数。反向传播负责计算导数；优化器负责利用导数更新参数。两者分工不同。</p>
 <h2>为什么多层线性仍然不够</h2>
-<p>若 $h=W_1x+b_1$，$y=W_2h+b_2$，则 $y=(W_2W_1)x+(W_2b_1+b_2)$，仍然是线性/仿射函数。加上 $h=\operatorname{ReLU}(W_1x+b_1)$ 后，组合才有分段非线性表达能力。大白话：只叠加几次“按比例放大”，不会自动长出判断复杂边界的能力。</p>
-<p>本项目 MLP 是 $4\to16\to2$。参数量：$(4\times16+16)+(16\times2+2)=114$。参数很少，仍足以走完训练、模型选择、导出、服务和基准测试。</p>
+<p>若 <span class="math-inline">\(h=W_1x+b_1\)</span>，<span class="math-inline">\(y=W_2h+b_2\)</span>，则 <span class="math-inline">\(y=(W_2W_1)x+(W_2b_1+b_2)\)</span>，仍然是线性/仿射函数。加上 <span class="math-inline">\(h=\mathrm{ReLU}(W_1x+b_1)\)</span> 后，组合才有分段非线性表达能力。大白话：只叠加几次“按比例放大”，不会自动长出判断复杂边界的能力。</p>
+<p>本项目 MLP 是 <span class="math-inline">\(4\to16\to2\)</span>。参数量：<span class="math-inline">\((4\times16+16)+(16\times2+2)=114\)</span>。参数很少，仍足以走完训练、模型选择、导出、服务和基准测试。</p>
 <h2>反向传播不是玄学</h2>
-<p>先考虑 $\hat y=x^\top w$，$\mathcal L=\frac1n\sum_i(\hat y_i-y_i)^2$：</p>
-<p>$$\nabla_w\mathcal L=\frac2nX^\top(Xw-y).$$</p>
+<p>先考虑 <span class="math-inline">\(\hat y=x^\top w\)</span>，<span class="math-inline">\(\mathcal L=\frac{1}{n}\sum_i(\hat y_i-y_i)^2\)</span>：</p>
+<div class="math-display">\[\nabla_w\mathcal L=\frac{2}{n}X^\top(Xw-y).\]</div>
 <p>这可以看成两步：损失告诉预测“你偏了多少”，线性层再告诉每个权重“你对这个偏差贡献多少”。多层网络只是把这样的局部导数按链式法则相乘、相加。</p>
 <p>有限差分提供一个独立检查：</p>
-<p>$$\frac{\partial\mathcal L}{\partial w_j}\approx
-\frac{\mathcal L(w+\epsilon e_j)-\mathcal L(w-\epsilon e_j)}{2\epsilon}.$$</p>
-<p><code>gradients</code> 实验用 float64、$\epsilon=10^{-5}$ 对照解析梯度，误差应在 $10^{-8}$ 以下。$\epsilon$ 太大有截断误差，太小会受浮点抵消影响；不是越小越好。自动求导本身也应借助这样的独立数值检查建立信任。</p>
+<div class="math-display">\[\frac{\partial\mathcal L}{\partial w_j}\approx
+\frac{\mathcal L(w+\epsilon e_j)-\mathcal L(w-\epsilon e_j)}{2\epsilon}.\]</div>
+<p><code>gradients</code> 实验用 float64、<span class="math-inline">\(\epsilon=10^{-5}\)</span> 对照解析梯度，误差应在 <span class="math-inline">\(10^{-8}\)</span> 以下。<span class="math-inline">\(\epsilon\)</span> 太大有截断误差，太小会受浮点抵消影响；不是越小越好。自动求导本身也应借助这样的独立数值检查建立信任。</p>
 <h2>一次训练迭代的因果链</h2>
 <ol>
 <li>前向：输入和权重得到 logits。</li>
@@ -329,9 +329,9 @@ optimizer.step()
 <p>分类器把原始 logits 交给 <code>CrossEntropyLoss</code>；不要先 softmax 再把概率传进去。推理时再 softmax 得到展示用概率。<code>model.eval()</code> 改变 Dropout、BatchNorm 等模块的行为，<code>inference_mode()</code> 控制自动求导开销；二者不是替代关系。</p>
 <h2>CNN、RNN 与 Transformer 怎么接上来</h2>
 <p>CNN 通过局部连接和权重共享处理局部结构。卷积输出边长：</p>
-<p>$$H_{out}=\left\lfloor\frac{H+2p-d(k-1)-1}{s}+1\right\rfloor.$$</p>
-<p>输入高 $H$、padding $p$、dilation $d$、kernel $k$、stride $s$，每项都影响输出形状。常见错误是只算了空间尺寸，忘记输出通道数。</p>
-<p>RNN 把过去压入递推状态 $h_t=f(h_{t-1},x_t)$；Transformer 则通过注意力读取其他位置的信息。它们都在学习函数，但信息流与并行性不同。不能用“Transformer 没有顺序计算”概括自回归生成，生成新 token 仍然依赖上一步结果。</p>
+<div class="math-display">\[H_{out}=\left\lfloor\frac{H+2p-d(k-1)-1}{s}+1\right\rfloor.\]</div>
+<p>输入高 <span class="math-inline">\(H\)</span>、padding <span class="math-inline">\(p\)</span>、dilation <span class="math-inline">\(d\)</span>、kernel <span class="math-inline">\(k\)</span>、stride <span class="math-inline">\(s\)</span>，每项都影响输出形状。常见错误是只算了空间尺寸，忘记输出通道数。</p>
+<p>RNN 把过去压入递推状态 <span class="math-inline">\(h_t=f(h_{t-1},x_t)\)</span>；Transformer 则通过注意力读取其他位置的信息。它们都在学习函数，但信息流与并行性不同。不能用“Transformer 没有顺序计算”概括自回归生成，生成新 token 仍然依赖上一步结果。</p>
 <h2>实验与源码阅读</h2>
 <pre><code class="language-powershell">python -m edge_ai_labs --lab gradients
 python -m edge_ai_labs --lab classifier
@@ -392,8 +392,8 @@ python -m edge_ai_labs --lab classifier
 <li><strong>运行可用</strong>：冷启动、内存、吞吐、异常和稳定性是否满足目标。</li>
 </ol>
 <p>数值对照使用：</p>
-<p>$$|a-b|\le \mathrm{atol}+\mathrm{rtol}|b|.$$</p>
-<p>当 $b$ 接近零，相对误差会夸大；所以应同时报告绝对误差。分类 argmax 相同也不代表 logits 一致：概率分布可能已经变形。反过来，接近决策边界的样本可能因极小数值误差而翻转，应查看其 margin，而不是只报一致率。</p>
+<div class="math-display">\[|a-b|\le \mathrm{atol}+\mathrm{rtol}|b|.\]</div>
+<p>当 <span class="math-inline">\(b\)</span> 接近零，相对误差会夸大；所以应同时报告绝对误差。分类 argmax 相同也不代表 logits 一致：概率分布可能已经变形。反过来，接近决策边界的样本可能因极小数值误差而翻转，应查看其 margin，而不是只报一致率。</p>
 <h2>本项目如何走通</h2>
 <pre><code class="language-powershell">python -m pip install -r requirements-export.txt
 python -m edge_ai_labs --lab classifier --seed 42
@@ -452,39 +452,39 @@ python -m edge_ai_labs --lab export --seed 42
 <p>注意力是“依据当前问题，从已有信息中加权读取内容”的可微操作。它不自动理解语言；参数、数据、训练目标和结构共同决定最后学到什么。</p>
 <p>假设你在读“把书放到桌上，因为它很平”。要理解“它”，你会回头比较候选对象。注意力中的 query 像当前要找的线索，key 像每个位置提供的索引，value 才是最后取回并混合的信息。这个比喻帮助理解数据流，但 attention 权重不能直接当作可靠的因果解释。</p>
 <h2>从输入到输出，逐项核对 shape</h2>
-<p>令 $X\in\mathbb R^{T\times d}$，单头投影：</p>
-<p>$$Q=XW_Q\in\mathbb R^{T\times d_k},\quad
+<p>令 <span class="math-inline">\(X\in\mathbb R^{T\times d}\)</span>，单头投影：</p>
+<div class="math-display">\[Q=XW_Q\in\mathbb R^{T\times d_k},\quad
 K=XW_K\in\mathbb R^{T\times d_k},\quad
-V=XW_V\in\mathbb R^{T\times d_v}.$$</p>
-<p>$$S=QK^\top/\sqrt{d_k},\qquad P=\operatorname{softmax}(S+M),\qquad O=PV.$$</p>
-<p>$S$、$P$ 是 $T\times T$，$O$ 是 $T\times d_v$。softmax 沿 key 轴进行，每一行权重和为 1。不能误沿 query 轴归一化。<a href="https://arxiv.org/pdf/1706.03762">Vaswani 等，2017，NeurIPS，原文 PDF</a></p>
-<p>为什么除以 $\sqrt{d_k}$？若 query 与 key 各分量近似独立、均值为零、方差为 1，内积方差约为 $d_k$。缩放让打分的尺度不随维度直接膨胀，缓解 softmax 过度饱和。这是初始化尺度下的解释，不是训练后严格分布不变的保证。</p>
-<p>对 $T=3$ 的自回归输入，因果遮罩为：</p>
-<p>$$M=\begin{bmatrix}0&amp;-\infty&amp;-\infty\\0&amp;0&amp;-\infty\\0&amp;0&amp;0\end{bmatrix}.$$</p>
+V=XW_V\in\mathbb R^{T\times d_v}.\]</div>
+<div class="math-display">\[S=QK^\top/\sqrt{d_k},\qquad P=\mathrm{softmax}(S+M),\qquad O=PV.\]</div>
+<p><span class="math-inline">\(S\)</span>、<span class="math-inline">\(P\)</span> 是 <span class="math-inline">\(T\times T\)</span>，<span class="math-inline">\(O\)</span> 是 <span class="math-inline">\(T\times d_v\)</span>。softmax 沿 key 轴进行，每一行权重和为 1。不能误沿 query 轴归一化。<a href="https://arxiv.org/pdf/1706.03762">Vaswani 等，2017，NeurIPS，原文 PDF</a></p>
+<p>为什么除以 <span class="math-inline">\(\sqrt{d_k}\)</span>？若 query 与 key 各分量近似独立、均值为零、方差为 1，内积方差约为 <span class="math-inline">\(d_k\)</span>。缩放让打分的尺度不随维度直接膨胀，缓解 softmax 过度饱和。这是初始化尺度下的解释，不是训练后严格分布不变的保证。</p>
+<p>对 <span class="math-inline">\(T=3\)</span> 的自回归输入，因果遮罩为：</p>
+<div class="math-display">\[M=\begin{bmatrix}0&amp;-\infty&amp;-\infty\\0&amp;0&amp;-\infty\\0&amp;0&amp;0\end{bmatrix}.\]</div>
 <p>第 0 个位置只看自身，第 1 个位置看前两个，最后一个位置可以看全部。未来位置不是权重较小，而是被排除。修改未来 token 后，前面的输出应保持不变，这比肉眼看图更可靠。</p>
 <p><img alt="因果注意力动画" src="assets/attention.gif" /></p>
 <h2>多头、GQA 与完整 Block</h2>
-<p>多头把表示分成多个子空间。常见 shape 为 $[B,H,T,d_h]$，各头输出拼接后经过输出投影。GQA 中 query 头数 $H_q$ 大于 KV 头数 $H_{kv}$，每组 query 共享 KV。它减少 KV 存储和读取，但属于模型结构选择；不能把任意训练好的 MHA 权重随意删成 GQA 而假定语义不变。<a href="https://arxiv.org/pdf/2305.13245">Ainslie 等，2023，EMNLP，GQA</a></p>
+<p>多头把表示分成多个子空间。常见 shape 为 <span class="math-inline">\([B,H,T,d_h]\)</span>，各头输出拼接后经过输出投影。GQA 中 query 头数 <span class="math-inline">\(H_q\)</span> 大于 KV 头数 <span class="math-inline">\(H_{kv}\)</span>，每组 query 共享 KV。它减少 KV 存储和读取，但属于模型结构选择；不能把任意训练好的 MHA 权重随意删成 GQA 而假定语义不变。<a href="https://arxiv.org/pdf/2305.13245">Ainslie 等，2023，EMNLP，GQA</a></p>
 <p>本项目采用一个 pre-norm block：</p>
-<p>$$U=X+\operatorname{Attention}(\operatorname{LN}(X)),\qquad
-Y=U+\operatorname{FFN}(\operatorname{LN}(U)).$$</p>
+<div class="math-display">\[U=X+\mathrm{Attention}(\mathrm{LN}(X)),\qquad
+Y=U+\mathrm{FFN}(\mathrm{LN}(U)).\]</div>
 <p>残差让信息和梯度有较直接的通路；归一化控制特征尺度；FFN 在每个位置上做非线性变换。现代 LLM 可能采用 RMSNorm、SwiGLU、RoPE、门控等变体。入门时先掌握数据流，再对照具体 config，别把一种实现当作全部 Transformer。</p>
 <h2>语言模型到底训练什么</h2>
-<p>自回归分解为 $p(x_{1:T})=\prod_t p(x_t\mid x_{&lt;t})$，训练损失通常是各预测位置的交叉熵。已知整段文本时，可用遮罩同时计算多个位置的训练损失；生成时下一 token 未知，要逐步采样。训练的并行不等于生成没有依赖。</p>
+<p>自回归分解为 <span class="math-inline">\(p(x_{1:T})=\prod_t p(x_t\mid x_{\lt t})\)</span>，训练损失通常是各预测位置的交叉熵。已知整段文本时，可用遮罩同时计算多个位置的训练损失；生成时下一 token 未知，要逐步采样。训练的并行不等于生成没有依赖。</p>
 <p>Tokenizer 把文本变成 token ID，embedding 把 ID 变成可训练向量。词表、特殊 token 和 chat template 都属于模型契约。字符数、词数、token 数不能互换。本项目微型模型使用字符词表，避免把 tokenizer 库安装变成学习障碍。</p>
 <h2>实验、调用链与边界</h2>
 <pre><code class="language-powershell">python -m edge_ai_labs --lab attention
 python -m edge_ai_labs --lab tiny-lm --seed 42
 </code></pre>
 <ol>
-<li><code>math_labs.py::attention</code>：产生 $Q,K,V$，比较完整因果 attention 与逐 token 读取历史 KV。</li>
+<li><code>math_labs.py::attention</code>：产生 <span class="math-inline">\(Q,K,V\)</span>，比较完整因果 attention 与逐 token 读取历史 KV。</li>
 <li><code>torch_labs.py::tiny_lm</code>：生成原创玩具语料和字符词表。</li>
 <li><code>TinyLM.forward</code>：token/position embedding → LN → QKV → mask/softmax → residual → FFN → logits。</li>
 <li>训练 100 步，再比较整段前向与“11 token prefill + 逐 token decode”。</li>
 <li>改写未来输入，验证前 20 个位置的 logits 不变。</li>
 </ol>
 <p>模型只有约 1.6 万参数；默认训练损失下降，但生成文本仍会重复或拼错。语料重复、没有独立测试集，因此不能报告通用语言能力。这里验证的是训练链路、shape、cache 和因果约束。不要把训练损失当作下游质量结论。</p>
-<p>过关任务：取 $B=2,H=4,T=8,d_h=8$，写出 Q、scores、输出以及缓存的 shape；解释为什么多个头并不等于四个独立大模型。下一课只研究已经存在的模型如何生成，不再展开预训练工程。</p>
+<p>过关任务：取 <span class="math-inline">\(B=2,H=4,T=8,d_h=8\)</span>，写出 Q、scores、输出以及缓存的 shape；解释为什么多个头并不等于四个独立大模型。下一课只研究已经存在的模型如何生成，不再展开预训练工程。</p>
 <!-- COURSE-NAV -->
 
 <hr />
@@ -512,28 +512,28 @@ python -m edge_ai_labs --lab tiny-lm --seed 42
 </code></pre></details>
 <p>给定 100 个输入 token，prefill 可以一次处理这些已知位置；第 101 个 token 被选出后，才能据此生成第 102 个。模型前向输出的是词表 logits，解码策略再选择 token。温度调整分布，top-k/top-p 约束候选；这些方法不等于提高事实准确率。</p>
 <h2>KV Cache 为什么正确</h2>
-<p>在严格因果、推理状态固定的模型中，未来 token 不改变历史位置的隐状态，所以历史层的 K/V 可以保留。对当前位置 $t$：</p>
-<p>$$o_t=\operatorname{softmax}\left(\frac{q_tK_{1:t}^\top}{\sqrt{d_h}}\right)V_{1:t}.$$</p>
-<p>只算 $q_t,k_t,v_t$，把 $k_t,v_t$ 追加到缓存，再读取历史 KV。位置编码必须使用全局位置 $t$；如果每次 decode 都把 position 重置为 0，shape 虽正确，结果却错误。本项目 <code>TinyLM.forward</code> 从缓存长度得到 <code>offset</code>，并用全局 query/key 位置构造 mask。</p>
+<p>在严格因果、推理状态固定的模型中，未来 token 不改变历史位置的隐状态，所以历史层的 K/V 可以保留。对当前位置 <span class="math-inline">\(t\)</span>：</p>
+<div class="math-display">\[o_t=\mathrm{softmax}\left(\frac{q_tK_{1:t}^\top}{\sqrt{d_h}}\right)V_{1:t}.\]</div>
+<p>只算 <span class="math-inline">\(q_t,k_t,v_t\)</span>，把 <span class="math-inline">\(k_t,v_t\)</span> 追加到缓存，再读取历史 KV。位置编码必须使用全局位置 <span class="math-inline">\(t\)</span>；如果每次 decode 都把 position 重置为 0，shape 虽正确，结果却错误。本项目 <code>TinyLM.forward</code> 从缓存长度得到 <code>offset</code>，并用全局 query/key 位置构造 mask。</p>
 <p>大白话：已经整理好的旧资料不用重新抄一遍，但回答新问题时仍得翻阅相关旧资料。缓存不是让旧资料从内存读取里消失。</p>
 <h2>从缓存 shape 推导内存</h2>
-<p>标准全注意力各层 KV：$[B,H_{kv},T,d_h]$，K 和 V 各一份，每元素 $s$ 字节：</p>
-<p>$$M_{KV}=2BTH_{kv}d_hLs.$$</p>
+<p>标准全注意力各层 KV：<span class="math-inline">\([B,H_{kv},T,d_h]\)</span>，K 和 V 各一份，每元素 <span class="math-inline">\(s\)</span> 字节：</p>
+<div class="math-display">\[M_{KV}=2BTH_{kv}d_hLs.\]</div>
 <p>更一般地应逐层求和：</p>
-<p>$$M_{KV}=2Bs\sum_{\ell\in\mathcal A}T_\ell H_{kv,\ell}d_{h,\ell}.$$</p>
-<p>$\mathcal A$ 是实际缓存历史 K/V 的层。滑动窗口可能让 $T_\ell$ 不同；混合注意力层的递推状态应单列；量化 cache 还要加入 scale 等元数据。不能把所有模型统一套进同一个全层公式。</p>
-<p>教学配置 $B=1,T=2048,L=24,H_{kv}=4,d_h=64,s=2$：</p>
-<p>$$M=50{,}331{,}648\text{ bytes}=48\text{ MiB}.$$</p>
+<div class="math-display">\[M_{KV}=2Bs\sum_{\ell\in\mathcal A}T_\ell H_{kv,\ell}d_{h,\ell}.\]</div>
+<p><span class="math-inline">\(\mathcal A\)</span> 是实际缓存历史 K/V 的层。滑动窗口可能让 <span class="math-inline">\(T_\ell\)</span> 不同；混合注意力层的递推状态应单列；量化 cache 还要加入 scale 等元数据。不能把所有模型统一套进同一个全层公式。</p>
+<p>教学配置 <span class="math-inline">\(B=1,T=2048,L=24,H_{kv}=4,d_h=64,s=2\)</span>：</p>
+<div class="math-display">\[M=50{,}331{,}648\text{ bytes}=48\text{ MiB}.\]</div>
 <p>若仅有 6 层全注意力，这部分是 12 MiB，但还没算其他层状态。<strong>本例是合成配置，不是 Qwen3.5-2B 的配置</strong>；真实混合模型见第 17 课。</p>
 <p><img alt="KV Cache 增长动画" src="assets/kv-cache.gif" /></p>
 <h2>为什么 prefill 与 decode 的瓶颈常不同</h2>
-<p>线性层 $[B T,K]@[K,N]$ 在 prefill 有更多行可复用同一权重；单序列 decode 常接近一行乘大矩阵。粗略 Roofline：</p>
-<p>$$P\le\min(P_{peak},BW\cdot I),\quad I=F/Q.$$</p>
-<p>$F$ 是 FLOPs，$Q$ 是相应存储层级的数据流量。低 batch decode 常受带宽约束，但不能一概而论：batch、上下文长度、量化内核、缓存命中和硬件都会改变主瓶颈。<a href="https://www2.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-134.pdf">Williams、Waterman、Patterson，2009，CACM；作者技术报告 PDF</a></p>
-<p>$$M_{peak}\approx M_{weights}+M_{KV/state}+M_{workspace}+M_{runtime}+M_{I/O}.$$</p>
+<p>线性层 <span class="math-inline">\([B T,K]@[K,N]\)</span> 在 prefill 有更多行可复用同一权重；单序列 decode 常接近一行乘大矩阵。粗略 Roofline：</p>
+<div class="math-display">\[P\le\min(P_{peak},BW\cdot I),\quad I=F/Q.\]</div>
+<p><span class="math-inline">\(F\)</span> 是 FLOPs，<span class="math-inline">\(Q\)</span> 是相应存储层级的数据流量。低 batch decode 常受带宽约束，但不能一概而论：batch、上下文长度、量化内核、缓存命中和硬件都会改变主瓶颈。<a href="https://www2.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-134.pdf">Williams、Waterman、Patterson，2009，CACM；作者技术报告 PDF</a></p>
+<div class="math-display">\[M_{peak}\approx M_{weights}+M_{KV/state}+M_{workspace}+M_{runtime}+M_{I/O}.\]</div>
 <p>权重文件只有这些项中的一部分。mmap 文件大小、虚拟地址空间、RSS、NPU 共享缓冲也有不同口径，不能直接相加而不查是否重复记账。</p>
 <h2>指标定义先固定</h2>
-<p>TTFT 从请求提交到首个输出 token；相邻输出 token 间隔为 ITL；单请求 $N&gt;1$ 个输出 token 的平均 TPOT 可定义为 $(t_N-t_1)/(N-1)$。端到端延迟是请求到最后输出。服务吞吐是测量窗口内完成的输出 token 数除以时间。预填充速度、单请求生成速度和全服务吞吐分别报告。</p>
+<p>TTFT 从请求提交到首个输出 token；相邻输出 token 间隔为 ITL；单请求 <span class="math-inline">\(N\gt 1\)</span> 个输出 token 的平均 TPOT 可定义为 <span class="math-inline">\((t_N-t_1)/(N-1)\)</span>。端到端延迟是请求到最后输出。服务吞吐是测量窗口内完成的输出 token 数除以时间。预填充速度、单请求生成速度和全服务吞吐分别报告。</p>
 <h2>实验与过关任务</h2>
 <p>运行 <code>python -m edge_ai_labs --lab memory</code>，阅读 <code>math_labs.py::kv_bytes</code> 的逐层求和；运行 <code>--lab tiny-lm</code> 检查真实缓存对照。<code>memory</code> 返回理论 payload，不尝试冒充 RSS 测量。</p>
 <p>请预测：上下文翻倍、batch 翻倍、KV 头减半分别如何改变该公式？再解释为什么实际峰值内存不一定精确按这个比例变化。全注意力缓存思想可延伸阅读 <a href="https://arxiv.org/pdf/1911.02150">Shazeer，2019，Fast Transformer Decoding</a>。</p>
@@ -547,19 +547,19 @@ python -m edge_ai_labs --lab tiny-lm --seed 42
 <h2>本课结论</h2>
 <p>量化同时涉及数值近似、数据编码和硬件执行。把权重写成低位宽不自动得到快速 Kernel；权重小不等于运行内存按同样比例减小；均方误差小也不等于任务质量一定更好。</p>
 <h2>一把刻度尺的推导</h2>
-<p>仿射量化用整数 $q$ 表示浮点数 $x$：</p>
-<p>$$q=\operatorname{clip}\left(\operatorname{round}(x/s)+z,q_{min},q_{max}\right),\qquad
-\hat x=s(q-z).$$</p>
-<p>$s&gt;0$ 是刻度间距，$z$ 是零点。非对称量化常取 $s=(x_{max}-x_{min})/(q_{max}-q_{min})$，再把零点舍入并裁剪到整数范围。这样部署中的零填充值才有准确对应。<a href="https://arxiv.org/pdf/1712.05877">Jacob 等，2018，CVPR，PDF</a></p>
-<p>本项目用简化的对称量化：$z=0$，$q\in[-Q,Q]$，$Q=2^{b-1}-1$，$s=\max|x|/Q$。INT8 用 $[-127,127]$；INT4 用 $[-7,7]$，有意不使用最负的编码。没有裁剪时，舍入误差通常满足 $|x-\hat x|\le s/2$。超出校准范围后，误差可以远大于这个界。</p>
+<p>仿射量化用整数 <span class="math-inline">\(q\)</span> 表示浮点数 <span class="math-inline">\(x\)</span>：</p>
+<div class="math-display">\[q=\mathrm{clip}\left(\mathrm{round}(x/s)+z,q_{min},q_{max}\right),\qquad
+\hat x=s(q-z).\]</div>
+<p><span class="math-inline">\(s\gt 0\)</span> 是刻度间距，<span class="math-inline">\(z\)</span> 是零点。非对称量化常取 <span class="math-inline">\(s=(x_{max}-x_{min})/(q_{max}-q_{min})\)</span>，再把零点舍入并裁剪到整数范围。这样部署中的零填充值才有准确对应。<a href="https://arxiv.org/pdf/1712.05877">Jacob 等，2018，CVPR，PDF</a></p>
+<p>本项目用简化的对称量化：<span class="math-inline">\(z=0\)</span>，<span class="math-inline">\(q\in[-Q,Q]\)</span>，<span class="math-inline">\(Q=2^{b-1}-1\)</span>，<span class="math-inline">\(s=\max|x|/Q\)</span>。INT8 用 <span class="math-inline">\([-127,127]\)</span>；INT4 用 <span class="math-inline">\([-7,7]\)</span>，有意不使用最负的编码。没有裁剪时，舍入误差通常满足 <span class="math-inline">\(|x-\hat x|\le s/2\)</span>。超出校准范围后，误差可以远大于这个界。</p>
 <p>大白话：量化像用格子纸记坐标。格子越大，细节越容易丢；范围铺得越宽，同样数量的格子就越粗。</p>
 <h2>一个异常值为什么影响整层</h2>
-<p>数组 <code>[-0.2,0.1,0.2,30]</code> 若共享一个 INT4 scale，则 $s=30/7\approx4.29$，前三个数几乎全舍入成 0。逐通道 scale 让数值范围不同的输出通道各用自己的尺子；分组 scale 在精度和元数据成本之间折中。</p>
+<p>数组 <code>[-0.2,0.1,0.2,30]</code> 若共享一个 INT4 scale，则 <span class="math-inline">\(s=30/7\approx4.29\)</span>，前三个数几乎全舍入成 0。逐通道 scale 让数值范围不同的输出通道各用自己的尺子；分组 scale 在精度和元数据成本之间折中。</p>
 <pre><code class="language-powershell">python -m edge_ai_labs --lab quantization --seed 42
 </code></pre>
-<p><code>math_labs.py::quantization</code> 生成各行尺度不同的 $W\in\mathbb R^{32\times64}$，加入异常值，再对比 INT8 全张量、INT8 逐通道、INT4 逐通道和 INT4 裁剪。输出同时包含：</p>
-<p>$$\operatorname{MSE}_W=\frac{\|W-\hat W\|_F^2}{|W|},\qquad
-\operatorname{MSE}_Y=\frac{\|XW^\top-X\hat W^\top\|_F^2}{|Y|}.$$</p>
+<p><code>math_labs.py::quantization</code> 生成各行尺度不同的 <span class="math-inline">\(W\in\mathbb R^{32\times64}\)</span>，加入异常值，再对比 INT8 全张量、INT8 逐通道、INT4 逐通道和 INT4 裁剪。输出同时包含：</p>
+<div class="math-display">\[\mathrm{MSE}_W=\frac{\|W-\hat W\|_F^2}{|W|},\qquad
+\mathrm{MSE}_Y=\frac{\|XW^\top-X\hat W^\top\|_F^2}{|Y|}.\]</div>
 <p>默认样例中裁剪会伤害那个真实参与计算的异常值，输出误差反而增大。这是有意保留的反例：不能把“去异常值”写成永远有益的口诀。输入分布影响输出误差，权重 MSE 不是最终质量指标。</p>
 <h2>校准和量化方法在做什么</h2>
 <table>
@@ -596,7 +596,7 @@ python -m edge_ai_labs --lab tiny-lm --seed 42
 <p>AWQ、GPTQ 等不是“同一条 round 公式换个名字”；它们针对误差与敏感性的处理不同。本实验<strong>没有实现</strong> AWQ 或 GPTQ。继续阅读 <a href="https://arxiv.org/pdf/2306.00978">Lin 等，2024，MLSys，AWQ</a> 及 <a href="https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html">ONNX Runtime 官方量化文档</a>。</p>
 <h2>为什么量化后可能更慢</h2>
 <p>若每次先把全模型解包、反量化成 FP32 再调用普通矩阵乘法，可能增加临时存储和搬运。高效实现通常在合适的计算块里解码、重标定与累积，而不是要求“永远不能反量化”。当模型很小、batch 改变、内核不支持或 CPU/NPU 数据往返占主导时，量化收益会被开销抵消。</p>
-<p>W4A16 只描述权重与激活的主要位宽组合，不规定全部张量、scale、缓存与累加精度。对 $P$ 个参数，$Pb/8$ 只是裸数据理想字节数；还要考虑分组参数、padding、保留高精度层与封装。</p>
+<p>W4A16 只描述权重与激活的主要位宽组合，不规定全部张量、scale、缓存与累加精度。对 <span class="math-inline">\(P\)</span> 个参数，<span class="math-inline">\(Pb/8\)</span> 只是裸数据理想字节数；还要考虑分组参数、padding、保留高精度层与封装。</p>
 <h2>阅读链与验证边界</h2>
 <p><code>quantize_dequantize</code>：选范围 → 算 scale → round/clip → int8 存储 → 重建浮点。为了可读性，4 bit 数值也装在 int8 数组中，因此 <code>ideal_weight_bytes</code> 是理论 payload，不是实际压缩文件，也不是速度实测。</p>
 <p>过关任务：解释为什么一行数范围很小，另一行范围很大时逐通道通常有帮助；再构造“权重误差更小但特定输入输出误差更大”的案例。板端量化比较必须使用相同模型、输入集和测量口径，第 15 课给出报告方法。</p>
@@ -613,9 +613,9 @@ python -m edge_ai_labs --lab tiny-lm --seed 42
 <p>离线链：文档 → 清洗 → 切块 → 表示 → 索引。在线链：问题 → 检索 → 可选重排 → 证据上下文 → 生成 → 引用核对。大白话：先给书做索引，再让回答者带着找到的页码回答；找到了错误页码，回答者再聪明也容易答错。<a href="https://arxiv.org/pdf/2005.11401">Lewis 等，2020，NeurIPS，PDF</a></p>
 <p>分块太小可能丢失条件，太大可能把噪声与有效句子一起送入上下文。重叠能缓解边界截断，也会造成重复证据。文档更新时需要更新索引并保留版本，否则“检索到了”仍可能是过时知识。</p>
 <p>本实验用中英文词项和中文双字片段构建简单 TF-IDF：</p>
-<p>$$\operatorname{idf}(t)=\log\frac{1+N}{1+df(t)}+1,\quad
-v_{d,t}=tf(t,d)\operatorname{idf}(t),\quad
-\operatorname{score}(q,d)=\frac{v_q^\top v_d}{\|v_q\|\|v_d\|}.$$</p>
+<div class="math-display">\[\mathrm{idf}(t)=\log\frac{1+N}{1+df(t)}+1,\quad
+v_{d,t}=tf(t,d)\mathrm{idf}(t),\quad
+\mathrm{score}(q,d)=\frac{v_q^\top v_d}{\|v_q\|\|v_d\|}.\]</div>
 <p>这是词项匹配基线，不是语义 embedding。中文分词也只做了教学简化。优点是无需网络或模型即可检查全部权重；缺点是同义改写、跨语言和长距离语义很弱。</p>
 <h2>分开评估，才能知道错在哪里</h2>
 <table>
@@ -769,7 +769,7 @@ vllm serve ./models/hf-model --host 127.0.0.1 --port 8081
 <p>先用单请求验证 template、输出与内存，再逐步提高并发。MLC 路线先确认目标架构、权重转换产物和模型库匹配，再通过 <code>MLCEngine</code> 运行。命令/API 以所固定版本为准，不提供一个貌似通用却缺目标配置的编译命令。</p>
 <h2>公平比较需要同一到达过程</h2>
 <p>闭环压测是“收到响应再发下一个”，适合测固定并发，但服务一变慢，客户端也少发请求；开环按设定到达率发请求，更能观察过载排队。比较时固定请求集合、到达种子、输入/输出 token 长度、超时与错误口径。</p>
-<p>Little 定律 $N=\lambda W$ 在稳定系统、统一边界和长期平均下关联在系统请求数、吞吐和逗留时间；不能拿瞬时值套它预测任何队列。平均吞吐提高也可能伴随 p95 TTFT 变差。</p>
+<p>Little 定律 <span class="math-inline">\(N=\lambda W\)</span> 在稳定系统、统一边界和长期平均下关联在系统请求数、吞吐和逗留时间；不能拿瞬时值套它预测任何队列。平均吞吐提高也可能伴随 p95 TTFT 变差。</p>
 <p>过关任务：在调度模拟中加入不同到达时刻与一个 KV token 预算，说明“空槽存在但不能接新请求”的条件。把新模型假设写到报告开头，再讨论结果。真正服务压测方案在第 15 课继续。</p>
 <!-- COURSE-NAV -->
 
@@ -782,18 +782,18 @@ vllm serve ./models/hf-model --host 127.0.0.1 --port 8081
 <p>编译器不是简单把 Python 翻译成 C。它需要保留计算语义，改变数据流、循环组织、存储与指令映射，并遵守 shape、dtype 和目标硬件约束。优化先验证正确性，再验证速度。</p>
 <h2>同一个矩阵乘法的两种视角</h2>
 <p>图层看到 <code>MatMul -&gt; Bias -&gt; ReLU</code>，可以分析数据依赖、常量折叠、融合或布局改写。张量程序层看到：</p>
-<p>$$C_{ij}=\sum_{k=0}^{K-1}A_{ik}B_{kj}.$$</p>
+<div class="math-display">\[C_{ij}=\sum_{k=0}^{K-1}A_{ik}B_{kj}.\]</div>
 <p>它要决定循环顺序、tile 大小、并行映射和中间数据存在哪里。融合能减少中间写回与启动，但可能增加寄存器压力或破坏高效库调用；不是算子越少越快。</p>
 <p>大白话：数学表达规定“最终要算出什么”，schedule 规定“工人分哪组、材料先搬哪块、哪个结果留在手边”。工序相同，材料搬运次数可以差很多。</p>
 <h2>分块为什么减少重复搬运</h2>
-<p>若分别计算一个输出元素，每个元素都需要相应的一行 A 和一列 B。一次算 $b\times b$ 的输出块，在一个 K 分块里读入两个 $b\times b$ 输入块，做约 $2b^3$ 次浮点运算。忽略输出与其他开销、每元素 $s$ 字节时，算术强度约为：</p>
-<p>$$I\approx\frac{2b^3}{2b^2s}=\frac b s.$$</p>
+<p>若分别计算一个输出元素，每个元素都需要相应的一行 A 和一列 B。一次算 <span class="math-inline">\(b\times b\)</span> 的输出块，在一个 K 分块里读入两个 <span class="math-inline">\(b\times b\)</span> 输入块，做约 <span class="math-inline">\(2b^3\)</span> 次浮点运算。忽略输出与其他开销、每元素 <span class="math-inline">\(s\)</span> 字节时，算术强度约为：</p>
+<div class="math-display">\[I\approx\frac{2b^3}{2b^2s}=\frac b s.\]</div>
 <p>tile 越大，潜在复用越多，但缓存/共享内存/寄存器容量有限，过大会溢出或减少并发。这个估计说明方向，不直接给最优 tile。</p>
 <h2>可运行的分块实验</h2>
 <pre><code class="language-powershell">python -m edge_ai_labs --lab compiler
 </code></pre>
-<p><code>math_labs.py::compiler</code> 构造 $17\times11$ 与 $11\times13$ 的矩阵，按 tile=4 计算，并对照 NumPy <code>a @ b</code>。尺寸特意不整除 tile，检查尾块。这里每块仍调用 NumPy 矩阵乘，Python 循环也有开销，因此不能用它证明 GPU 分块 Kernel 加速。</p>
-<p>接着用合成上限 $P_{peak}=1$ TFLOP/s、$BW=20$ GB/s、$I=2$ FLOP/byte 算 Roofline，得到 40 GFLOP/s 的带宽上限；拐点为 50 FLOP/byte。它不是任何具体芯片指标。公式和单位可独立核算。</p>
+<p><code>math_labs.py::compiler</code> 构造 <span class="math-inline">\(17\times11\)</span> 与 <span class="math-inline">\(11\times13\)</span> 的矩阵，按 tile=4 计算，并对照 NumPy <code>a @ b</code>。尺寸特意不整除 tile，检查尾块。这里每块仍调用 NumPy 矩阵乘，Python 循环也有开销，因此不能用它证明 GPU 分块 Kernel 加速。</p>
+<p>接着用合成上限 <span class="math-inline">\(P_{peak}=1\)</span> TFLOP/s、<span class="math-inline">\(BW=20\)</span> GB/s、<span class="math-inline">\(I=2\)</span> FLOP/byte 算 Roofline，得到 40 GFLOP/s 的带宽上限；拐点为 50 FLOP/byte。它不是任何具体芯片指标。公式和单位可独立核算。</p>
 <h2>TVM 的知识结构</h2>
 <p>TVM 原始论文讨论端到端优化与代码生成：<a href="https://arxiv.org/pdf/1802.04799">Chen 等，2018，OSDI，PDF</a>。当前工程学习应同时看官方文档，不能把 2018 年实现当作当前 API。</p>
 <table>
@@ -842,18 +842,18 @@ vllm serve ./models/hf-model --host 127.0.0.1 --port 8081
 <h2>本课结论</h2>
 <p>FlashAttention 的关键不是删掉标准注意力中的两两交互，而是用分块与在线归一化减少大中间矩阵在慢速存储层的读写。算法的数值等价和 GPU 的运行加速要分别验证。<a href="https://arxiv.org/pdf/2205.14135">Dao 等，2022，NeurIPS，PDF</a></p>
 <h2>先看朴素注意力的材料流</h2>
-<p>先算 $S=QK^\top$，再写回；读 $S$ 算 softmax 得到 $P$，再写回；读 $P$ 和 V 求输出。序列长时，$T\times T$ 中间矩阵可能成为重要的容量和流量开销。</p>
+<p>先算 <span class="math-inline">\(S=QK^\top\)</span>，再写回；读 <span class="math-inline">\(S\)</span> 算 softmax 得到 <span class="math-inline">\(P\)</span>，再写回；读 <span class="math-inline">\(P\)</span> 和 V 求输出。序列长时，<span class="math-inline">\(T\times T\)</span> 中间矩阵可能成为重要的容量和流量开销。</p>
 <p>大白话：如果一边读一边累计最终答案，就不必把所有中间草稿都搬到仓库再搬回来。关键难点在于 softmax 的分母依赖整行，不能天真地“每块各做 softmax 再拼接”。</p>
 <h2>在线 softmax 从合并两个分块推导</h2>
-<p>对已经处理的分数集合，保存三个量：最大值 $m$、归一化分母 $\ell$、未归一化加权和 $a$：</p>
-<p>$$\ell=\sum_j e^{s_j-m},\qquad a=\sum_j e^{s_j-m}v_j.$$</p>
-<p>新块的最大值为 $m_b$，记 $m&#x27;=\max(m,m_b)$。把旧结果换到同一指数基准，再加新块：</p>
-<p>$$\ell&#x27;=e^{m-m&#x27;}\ell+\sum_{j\in b}e^{s_j-m&#x27;},$$
-$$a&#x27;=e^{m-m&#x27;}a+\sum_{j\in b}e^{s_j-m&#x27;}v_j,\qquad o=a&#x27;/\ell&#x27;.$$</p>
-<p>为什么能这样合并？因为 $e^{s_j-m}=e^{s_j-m&#x27;}e^{m&#x27;-m}$，旧项乘 $e^{m-m&#x27;}$ 就与新项处在同一基准。初始化 $m=-\infty,\ell=0,a=0$。最大值移位让指数不容易上溢。</p>
-<p>例子：分数 <code>[1,2]</code>，value <code>[10,20]</code>。先读第一项得到 $m=1,\ell=1,a=10$；第二项使 $m&#x27;=2$，更新 $\ell&#x27;=e^{-1}+1$，$a&#x27;=10e^{-1}+20$；结果约 17.31，与一次性 softmax 完全同义，浮点舍入除外。</p>
+<p>对已经处理的分数集合，保存三个量：最大值 <span class="math-inline">\(m\)</span>、归一化分母 <span class="math-inline">\(\ell\)</span>、未归一化加权和 <span class="math-inline">\(a\)</span>：</p>
+<div class="math-display">\[\ell=\sum_j e^{s_j-m},\qquad a=\sum_j e^{s_j-m}v_j.\]</div>
+<p>新块的最大值为 <span class="math-inline">\(m_b\)</span>，记 <span class="math-inline">\(m&#x27;=\max(m,m_b)\)</span>。把旧结果换到同一指数基准，再加新块：</p>
+<div class="math-display">\[\ell&#x27;=e^{m-m&#x27;}\ell+\sum_{j\in b}e^{s_j-m&#x27;},\]</div>
+<div class="math-display">\[a&#x27;=e^{m-m&#x27;}a+\sum_{j\in b}e^{s_j-m&#x27;}v_j,\qquad o=a&#x27;/\ell&#x27;.\]</div>
+<p>为什么能这样合并？因为 <span class="math-inline">\(e^{s_j-m}=e^{s_j-m&#x27;}e^{m&#x27;-m}\)</span>，旧项乘 <span class="math-inline">\(e^{m-m&#x27;}\)</span> 就与新项处在同一基准。初始化 <span class="math-inline">\(m=-\infty,\ell=0,a=0\)</span>。最大值移位让指数不容易上溢。</p>
+<p>例子：分数 <code>[1,2]</code>，value <code>[10,20]</code>。先读第一项得到 <span class="math-inline">\(m=1,\ell=1,a=10\)</span>；第二项使 <span class="math-inline">\(m&#x27;=2\)</span>，更新 <span class="math-inline">\(\ell&#x27;=e^{-1}+1\)</span>，<span class="math-inline">\(a&#x27;=10e^{-1}+20\)</span>；结果约 17.31，与一次性 softmax 完全同义，浮点舍入除外。</p>
 <h2>本仓库真正实现了哪部分</h2>
-<p><code>math_labs.py::online_attention</code> 对每个 query 逐 key 块更新三个量，支持因果 attention 和不能整除的尾块。它不会构造完整 $T\times T$ scores；但它是 NumPy/Python 数学参考，不是 FlashAttention GPU Kernel 的性能复现。</p>
+<p><code>math_labs.py::online_attention</code> 对每个 query 逐 key 块更新三个量，支持因果 attention 和不能整除的尾块。它不会构造完整 <span class="math-inline">\(T\times T\)</span> scores；但它是 NumPy/Python 数学参考，不是 FlashAttention GPU Kernel 的性能复现。</p>
 <pre><code class="language-powershell">python -m edge_ai_labs --lab attention
 python -m unittest discover -s tests -v
 </code></pre>
@@ -895,7 +895,7 @@ python -m unittest discover -s tests -v
 </table>
 <p>具体执行语义见 <a href="https://docs.nvidia.com/cuda/cuda-programming-guide/index.html">NVIDIA 官方 CUDA Programming Guide</a>；在受支持 GPU 上继续阅读 <a href="https://triton-lang.org/main/getting-started/tutorials/06-fused-attention.html">Triton 官方 Fused Attention 教程</a>。不要把 NVIDIA 的线程组织细节套给所有 NPU。</p>
 <h2>三个容易混淆的复杂度</h2>
-<p>完整 attention 的两两交互算术仍通常为 $O(T^2d)$；避免存储完整中间矩阵能改善额外存储与 IO；单次 decode 的 query 长度是 1，其 shape 和 prefill 不同。谈“线性内存”时必须说明是哪个张量、哪个阶段和哪一项额外空间。</p>
+<p>完整 attention 的两两交互算术仍通常为 <span class="math-inline">\(O(T^2d)\)</span>；避免存储完整中间矩阵能改善额外存储与 IO；单次 decode 的 query 长度是 1，其 shape 和 prefill 不同。谈“线性内存”时必须说明是哪个张量、哪个阶段和哪一项额外空间。</p>
 <p>过关任务：反驳“FlashAttention 用近似换速度”和“FlashAttention 让所有 attention FLOPs 变成线性”这两句话，分别指出错误发生在数学语义还是复杂度口径上。硬件编译与 NPU 工程在下一课展开。</p>
 <!-- COURSE-NAV -->
 
@@ -922,7 +922,7 @@ python adapters/export_static.py
 <p>模板按 <code>config → load_onnx → build → export_rknn → release</code> 组织，检查每一步返回码，保存输入/产物 SHA256。该模板未在本交付运行 RKNN；若 SDK 不支持此 ONNX，需要按其支持矩阵调整导出或算子，而不是忽略错误。需要量化时才增加 <code>--dataset calibration-list.txt</code>，格式严格遵循你固定版本的 SDK 示例。</p>
 <p>校准数据应与原始模型输入一致，保持正确 shape、dtype、范围。图中已含标准化，校准时输入就应是原始特征，不能先标准化两次。完成转换仍需使用官方 Runtime 示例做板端推理，保存 raw outputs 与同一输入的 PyTorch/ORT 输出对照。</p>
 <h2>NCHW、NHWC 与预处理</h2>
-<p>图像链路要逐项固定：相机/文件输入 → 色彩空间 → 裁剪/letterbox → resize → 归一化 → layout → dtype → 推理 → 后处理。NCHW 是 $[B,C,H,W]$，NHWC 是 $[B,H,W,C]$；交换 shape 不能代替正确地转置数据。</p>
+<p>图像链路要逐项固定：相机/文件输入 → 色彩空间 → 裁剪/letterbox → resize → 归一化 → layout → dtype → 推理 → 后处理。NCHW 是 <span class="math-inline">\([B,C,H,W]\)</span>，NHWC 是 <span class="math-inline">\([B,H,W,C]\)</span>；交换 shape 不能代替正确地转置数据。</p>
 <p>假如训练用 RGB，而摄像头给 BGR，模型往往还能输出“像真的”类别，但整体质量变差。把一张有红、绿、蓝三色块的测试图跑过完整预处理，直接检查输入张量，比盲目调阈值有效。</p>
 <p>所谓零拷贝也要说明哪段链路共享缓冲、谁拥有内存、同步在哪里完成。减少一次 memcpy 不等于整个端到端链路没有任何转换或缓存操作。</p>
 <h2>三层精度与性能检查</h2>
@@ -963,7 +963,7 @@ python adapters/export_static.py
 <p>RKLLM 的学习重点是支持矩阵、产物转换、Runtime 状态和资源生命周期。厂商算法缩写不能凭名字还原成论文算法；没有官方证据，就只描述可观察的接口与结果。</p>
 <h2>和 RKNN、GGUF 的关系</h2>
 <p><code>.rknn</code> 与 <code>.rkllm</code> 不是同一种部署产物，GGUF 也不能直接改后缀转换。SDK 的模型结构支持、量化方式、目标平台和运行库之间需要匹配。<a href="https://github.com/airockchip/rknn-llm">Rockchip 官方 rknn-llm 仓库</a></p>
-<p>选模先查官方支持矩阵，再查具体模型 revision/config。原附件以 Qwen3.5-2B 为进阶对象，本版保留“先解剖配置再部署”的方法，但不把它作为入门唯一选择，也不继承原作者的实测结果为本项目成绩。</p>
+<p>选模先查官方支持矩阵，再查具体模型 revision/config。本教程以 Qwen3.5-2B 作为进阶配置解剖案例；实际部署从当前 SDK 明确支持、能验证正确性的小模型开始，并单独记录测量结果。</p>
 <h2>转换前先写清交付契约</h2>
 <table>
 <thead>
@@ -1055,7 +1055,7 @@ curl -X POST http://127.0.0.1:8000/predict -H 'Content-Type: application/json' -
 <li><code>serve.py::build_server</code> 读取权重、均值和标准差，并计算模型 SHA256。</li>
 <li><code>Handler.do_GET</code> 的 <code>/health</code> 返回 ready 和模型标识；未知路径返回 404。</li>
 <li><code>Handler.do_POST</code> 校验请求路径、body 长度和字段集合。</li>
-<li>检查输入必须是有限数值的 <code>[B,4]</code>，$1\le B\le64$。</li>
+<li>检查输入必须是有限数值的 <code>[B,4]</code>，<span class="math-inline">\(1\le B\le64\)</span>。</li>
 <li>标准化 → MLP → softmax → JSON 概率和预测；输入错误返回 400。</li>
 </ol>
 <p>测试实际启动临时端口，检查健康、正常预测和错误 shape；它不是只调用内部函数的假集成。服务使用只读推理模型，尚未实现排队容量、生产超时治理和滚动发布。</p>
@@ -1118,7 +1118,7 @@ ps -eo pid,comm,rss,nlwp
 <h2>本课结论</h2>
 <p>一次优化只有在相同任务、质量约束和测量边界下比较，才有意义。先记录原始数据，再写结论。工具跑完没有报错，只是最低要求。</p>
 <h2>第一步：定义你究竟测哪一段</h2>
-<p>$$T_{e2e}=T_{queue}+T_{preprocess}+T_{transfer}+T_{compute}+T_{postprocess}+T_{transport}.$$</p>
+<div class="math-display">\[T_{e2e}=T_{queue}+T_{preprocess}+T_{transfer}+T_{compute}+T_{postprocess}+T_{transport}.\]</div>
 <p>这是划分思路，各项若实际重叠，不能把独立计时直接相加当墙钟时间。需要区分端到端耗时、设备事件耗时与各阶段重叠。异步设备若只计提交 API 的时间，会把主要计算漏掉；应使用该设备支持的同步/事件方法。</p>
 <p>本仓库 <code>scripts/benchmark.py</code> 只测 CPU 进程内“预处理 + forward”，输入张量已分配；不包含请求队列、HTTP 和序列化。它设置单线程、30 次预热、300 次采样，保留原始毫秒数组，分别测试 batch=1/8/32/64。</p>
 <pre><code class="language-powershell">python -m edge_ai_labs --lab classifier
@@ -1127,7 +1127,7 @@ python scripts/benchmark.py --repeats 300
 <p>输出是很小 MLP 的微基准，不应拿其高 samples/s 推断真实网络服务容量。计时开销、操作系统调度和后台进程在微秒级结果中占比可能很高。跨设备比较先扩大足够代表实际任务的工作负载。</p>
 <h2>第二步：选择统计口径</h2>
 <p>均值反映总时间摊到请求的平均，p50 反映典型请求，p95/p99 反映尾部。300 样本可以初步看分布，不能为高精度尾延迟保证提供充分证据。长任务要重复独立运行，明确实验单位；同一次运行里的许多 token 不是许多独立实验。</p>
-<p>吞吐用“完成工作量 / 墙钟窗口”计算。batch latency、每样本平均摊销时间和单样本独立请求时延不同：一次 batch=64 用时 1 ms，不代表单个独立请求只要 $1/64$ ms。</p>
+<p>吞吐用“完成工作量 / 墙钟窗口”计算。batch latency、每样本平均摊销时间和单样本独立请求时延不同：一次 batch=64 用时 1 ms，不代表单个独立请求只要 <span class="math-inline">\(1/64\)</span> ms。</p>
 <p>冷启动包括首次加载、编译、页缺失和缓存建立等；稳态测试另做。温度/频率、功耗模式和是否启用 swap 需要记录，尤其是小板卡。不要把最冷的一次结果与另一配置的热稳态结果对比。</p>
 <h2>第三步：给 LLM 固定工作负载矩阵</h2>
 <table>
@@ -1173,9 +1173,9 @@ python scripts/benchmark.py --repeats 300
 </table>
 <p>分别报告 TTFT、ITL/TPOT、端到端延迟、完成吞吐、超时率和错误率。prefix cache、prompt cache、权重 page cache 要明确命中条件，不能把缓存命中与不命中混成同一配置。</p>
 <h2>第四步：用 Amdahl 定律判断值不值得做</h2>
-<p>若目标部分占原始时间比例 $f$，该部分加速 $s$ 倍，总加速比为：</p>
-<p>$$S=\frac1{(1-f)+f/s}.$$</p>
-<p>假如模型计算只占总延迟 40%，即便无限加速，整体上限也只有 $1/0.6\approx1.67$ 倍。大白话：一小时的流程里只有 24 分钟在算模型，把这段全省掉仍要花 36 分钟。先测时间占比，能避免在不重要的 Kernel 上耗费大量时间。</p>
+<p>若目标部分占原始时间比例 <span class="math-inline">\(f\)</span>，该部分加速 <span class="math-inline">\(s\)</span> 倍，总加速比为：</p>
+<div class="math-display">\[S=\frac1{(1-f)+f/s}.\]</div>
+<p>假如模型计算只占总延迟 40%，即便无限加速，整体上限也只有 <span class="math-inline">\(1/0.6\approx1.67\)</span> 倍。大白话：一小时的流程里只有 24 分钟在算模型，把这段全省掉仍要花 36 分钟。先测时间占比，能避免在不重要的 Kernel 上耗费大量时间。</p>
 <h2>排错树</h2>
 <details><summary>流程图源代码（GitHub 中可直接渲染）</summary><pre><code>flowchart TD
   A[结果不满足目标] --&gt; B{数值/任务正确吗}
@@ -1281,16 +1281,16 @@ python scripts/check_docs.py
 <p>这里仅使用对内存估算必要的配置事实：文本层数 24，其中 <code>layer_types</code> 包含 6 个 full attention 与 18 个 linear attention；full-attention 的 <code>num_key_value_heads=2</code>、<code>head_dim=256</code>。这些是<strong>配置事实</strong>，不是模型实际运行的全部内存分配行为。</p>
 <h2>重算 full-attention KV，而不是照抄标准模型</h2>
 <p>假设 batch=1，序列长度 2048，KV 元素用 2 字节：</p>
-<p>$$M_{fullKV}=2\times6\times2048\times2\times256\times2
-=25{,}165{,}824\ \mathrm{bytes}=24\ \mathrm{MiB}.$$</p>
+<div class="math-display">\[M_{fullKV}=2\times6\times2048\times2\times256\times2
+=25{,}165{,}824\ \mathrm{bytes}=24\ \mathrm{MiB}.\]</div>
 <p>这里的 2 字节是估算假设，需与所用 Runtime 的 cache dtype 核对。把 24 层都当全注意力会算出 96 MiB；它不是这个配置的 full-attention KV payload。反过来，只报 24 MiB 为“总缓存”也不正确，因为另有线性层状态与 Runtime 开销。</p>
 <p>可以用仓库的逐层函数复核：</p>
 <pre><code class="language-python">from edge_ai_labs.math_labs import kv_bytes
 assert kv_bytes([6], [2], [256], tokens=2048, element_bytes=2) == 24 * 2**20
 </code></pre>
-<p>第 05 课的教学配置是 $H_{kv}=4,d_h=64$，所以结果不同。不能只改模型名称而保留旧例的数字。</p>
+<p>第 05 课的教学配置是 <span class="math-inline">\(H_{kv}=4,d_h=64\)</span>，所以结果不同。不能只改模型名称而保留旧例的数字。</p>
 <h2>线性注意力状态怎么理解</h2>
-<p>某些线性注意力可以示意为递推更新 $S_t=f(S_{t-1},k_t,v_t)$，读出 $o_t=g(q_t,S_t)$。在固定结构下，部分状态大小可能不随历史 token 数线性增长，但它的精度、头维度、短卷积状态、checkpoint 或分块策略仍会影响实际内存。</p>
+<p>某些线性注意力可以示意为递推更新 <span class="math-inline">\(S_t=f(S_{t-1},k_t,v_t)\)</span>，读出 <span class="math-inline">\(o_t=g(q_t,S_t)\)</span>。在固定结构下，部分状态大小可能不随历史 token 数线性增长，但它的精度、头维度、短卷积状态、checkpoint 或分块策略仍会影响实际内存。</p>
 <p>这个递推式只是抽象说明，<strong>不是对 Qwen 具体线性注意力实现的完整公式</strong>。不能据此推断门控更新、数值精度和内部 buffer 大小。要给精确公式，需继续核查对应模型实现与技术报告；SDK 未公开的内部处理保持未知。</p>
 <p>大白话：全注意力像把所有历史条目逐条保留，递推状态像不断更新一张工作摘要。但“摘要”不等于所有信息无损、固定大小就一定更好，也不等于完全没有其它缓存。</p>
 <h2>多模态是对齐契约，不是额外传一个数组</h2>
@@ -1298,7 +1298,7 @@ assert kv_bytes([6], [2], [256], tokens=2048, element_bytes=2) == 24 * 2**20
 <p>模型目录里同时出现视觉和文本权重，不代表当前部署产物已经包含两者。转换器可能只导出语言侧；vision encoder 可能另走 RKNN；二者连接需要 SDK 支持和数值对照。先把“文本能生成”和“图像问答正确”作为两份验收。</p>
 <h2>如何用测量验证理论账本</h2>
 <p>固定产物、batch 与输出长度，扫描多个实际上下文长度，记录加载后、prefill 峰值、decode 和结束后的内存。将理论 full KV 斜率与实测增量比较。差额先记作“其他状态/分配开销”，只有逐项证据出现后再命名原因。</p>
-<p>过关任务：写一张表，分别列“来自 config 的事实”“估算时的假设”“必须实测的行为”。原附件已正确强调混合层不能套全层 KV 公式；本版在此基础上增加了单位推导、与教学配置的区别和可执行校验。</p>
+<p>过关任务：写一张表，分别列“来自 config 的事实”“估算时的假设”“必须实测的行为”。用单位推导与可执行校验解释：为什么混合层不能套用全层 KV 公式，为什么教学配置和真实模型配置的估算结果不同。</p>
 <!-- COURSE-NAV -->
 
 <hr />
@@ -1420,27 +1420,27 @@ assert kv_bytes([6], [2], [256], tokens=2048, element_bytes=2) == 24 * 2**20
 </thead>
 <tbody>
 <tr>
-<td>$Y=XW^\top+b$</td>
+<td><span class="math-inline">\(Y=XW^\top+b\)</span></td>
 <td>权重存放约定和输入轴一致</td>
 </tr>
 <tr>
-<td>$\mathrm{softmax}(QK^\top/\sqrt d)V$</td>
+<td><span class="math-inline">\(\mathrm{softmax}(QK^\top/\sqrt d)V\)</span></td>
 <td>softmax 轴、mask、Q/K 维度</td>
 </tr>
 <tr>
-<td>$M_{KV}=2BTH_{kv}d_hLs$</td>
+<td><span class="math-inline">\(M_{KV}=2BTH_{kv}d_hLs\)</span></td>
 <td>是否全注意力、实际层数/长度/精度</td>
 </tr>
 <tr>
-<td>$P\le\min(P_{peak},BW\cdot I)$</td>
+<td><span class="math-inline">\(P\le\min(P_{peak},BW\cdot I)\)</span></td>
 <td>同一存储层级、单位、工作负载与持续上限</td>
 </tr>
 <tr>
-<td>$q=\mathrm{clip}(\mathrm{round}(x/s)+z)$</td>
+<td><span class="math-inline">\(q=\mathrm{clip}(\mathrm{round}(x/s)+z)\)</span></td>
 <td>范围、zero point、舍入规则、裁剪</td>
 </tr>
 <tr>
-<td>$N=\lambda W$</td>
+<td><span class="math-inline">\(N=\lambda W\)</span></td>
 <td>稳定系统、相同边界、长期平均</td>
 </tr>
 </tbody>
@@ -1637,5 +1637,5 @@ assert kv_bytes([6], [2], [256], tokens=2048, element_bytes=2) == 24 * 2**20
 </tr>
 </tbody>
 </table>
-<h2>参考项目</h2>
-<p><a href="https://github.com/yunxiao11xie/ai-to-edge-deployment">yunxiao11xie/ai-to-edge-deployment</a>，附件提供版本；完整保留的 <a href="references/original-project-LICENSE.txt">MIT 通知</a>。主题映射和差异见 <a href="docs/source-review.md">来源审阅</a>。本项目未重新分发第三方论文 PDF、图片或模型权重。</p></article></main></body></html>
+<h2>版权与分发</h2>
+<p>本项目未重新分发第三方论文 PDF、图片或模型权重。第三方组件许可集中保存在 <a href="licenses/THIRD_PARTY_NOTICES.txt">许可声明</a> 与 <code>vendor/</code>，学术引用按上述原论文标注。</p></article></main></body></html>

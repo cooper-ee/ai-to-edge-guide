@@ -10,7 +10,10 @@
 
 图层看到 `MatMul -> Bias -> ReLU`，可以分析数据依赖、常量折叠、融合或布局改写。张量程序层看到：
 
-$$C_{ij}=\sum_{k=0}^{K-1}A_{ik}B_{kj}.$$
+```math
+C_{ij}=\sum_{k=0}^{K-1}A_{ik}B_{kj}.
+```
+
 
 它要决定循环顺序、tile 大小、并行映射和中间数据存在哪里。融合能减少中间写回与启动，但可能增加寄存器压力或破坏高效库调用；不是算子越少越快。
 
@@ -18,9 +21,12 @@ $$C_{ij}=\sum_{k=0}^{K-1}A_{ik}B_{kj}.$$
 
 ## 分块为什么减少重复搬运
 
-若分别计算一个输出元素，每个元素都需要相应的一行 A 和一列 B。一次算 $b\times b$ 的输出块，在一个 K 分块里读入两个 $b\times b$ 输入块，做约 $2b^3$ 次浮点运算。忽略输出与其他开销、每元素 $s$ 字节时，算术强度约为：
+若分别计算一个输出元素，每个元素都需要相应的一行 A 和一列 B。一次算 $`b\times b`$ 的输出块，在一个 K 分块里读入两个 $`b\times b`$ 输入块，做约 $`2b^3`$ 次浮点运算。忽略输出与其他开销、每元素 $`s`$ 字节时，算术强度约为：
 
-$$I\approx\frac{2b^3}{2b^2s}=\frac b s.$$
+```math
+I\approx\frac{2b^3}{2b^2s}=\frac b s.
+```
+
 
 tile 越大，潜在复用越多，但缓存/共享内存/寄存器容量有限，过大会溢出或减少并发。这个估计说明方向，不直接给最优 tile。
 
@@ -30,9 +36,9 @@ tile 越大，潜在复用越多，但缓存/共享内存/寄存器容量有限�
 python -m edge_ai_labs --lab compiler
 ```
 
-`math_labs.py::compiler` 构造 $17\times11$ 与 $11\times13$ 的矩阵，按 tile=4 计算，并对照 NumPy `a @ b`。尺寸特意不整除 tile，检查尾块。这里每块仍调用 NumPy 矩阵乘，Python 循环也有开销，因此不能用它证明 GPU 分块 Kernel 加速。
+`math_labs.py::compiler` 构造 $`17\times11`$ 与 $`11\times13`$ 的矩阵，按 tile=4 计算，并对照 NumPy `a @ b`。尺寸特意不整除 tile，检查尾块。这里每块仍调用 NumPy 矩阵乘，Python 循环也有开销，因此不能用它证明 GPU 分块 Kernel 加速。
 
-接着用合成上限 $P_{peak}=1$ TFLOP/s、$BW=20$ GB/s、$I=2$ FLOP/byte 算 Roofline，得到 40 GFLOP/s 的带宽上限；拐点为 50 FLOP/byte。它不是任何具体芯片指标。公式和单位可独立核算。
+接着用合成上限 $`P_{peak}=1`$ TFLOP/s、$`BW=20`$ GB/s、$`I=2`$ FLOP/byte 算 Roofline，得到 40 GFLOP/s 的带宽上限；拐点为 50 FLOP/byte。它不是任何具体芯片指标。公式和单位可独立核算。
 
 ## TVM 的知识结构
 

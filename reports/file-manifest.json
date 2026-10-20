@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "files": [
     {
       "path": ".github/workflows/check.yml",
@@ -93,48 +93,48 @@
     },
     {
       "path": "CONTRIBUTING.md",
-      "bytes": 1026,
-      "sha256": "72bdd18d0f57b38ddabb911bf75aad09817581ff10a6968c7488338126d2d001"
+      "bytes": 1302,
+      "sha256": "44c9943b6616d374ab80128da394cfd4949eafbba0ae1db628432000efd7c96a"
     },
     {
       "path": "docs/00-foundations.md",
-      "bytes": 4386,
-      "sha256": "1b346b6edcb3f7c193667c10deda51dd86d9578403cad1268ef50bb0cd98e040"
+      "bytes": 4398,
+      "sha256": "7b6c8db56313587bcdc293b710e127da52a33ba73157b7d7bf70d0eb391c9475"
     },
     {
       "path": "docs/01-machine-learning.md",
-      "bytes": 4620,
-      "sha256": "95b7134f3ff27b39356ad3f01909444e52c147314b3832bbf318ec2a48d32573"
+      "bytes": 4695,
+      "sha256": "0b4a0bb3b4457d277545dc2b40083484c2092f5697945d5a5791675bdff1f349"
     },
     {
       "path": "docs/02-neural-networks.md",
-      "bytes": 4304,
-      "sha256": "8919b1a90b537e14f6a2ce65aea1818369252fbe4fa1565fcdba957cb9d1ab0d"
+      "bytes": 4376,
+      "sha256": "dcef3d578c14f37d7264b9ab79f4811b19786b59c05f081aa80d0a968e30fb8d"
     },
     {
       "path": "docs/03-export-and-correctness.md",
-      "bytes": 4425,
-      "sha256": "adfc862ccefe12987b2f373b00f1e7d06a98cb802cfbb1aa71d89c198ee4540a"
+      "bytes": 4439,
+      "sha256": "cd49f3481f9069a0c58de65651971d6b4d0ef37b83930377dc7489ef93bd72ae"
     },
     {
       "path": "docs/04-transformer.md",
-      "bytes": 4853,
-      "sha256": "448fb77899b826b31823b55838adcfabefda6a48b727718f4b27c8775c4e9747"
+      "bytes": 4904,
+      "sha256": "457951f528165abcc1145376f87cac63e9745075cba5dddcc860ef0bae9664d9"
     },
     {
       "path": "docs/05-inference-and-cache.md",
-      "bytes": 4767,
-      "sha256": "373acb20c8fa45f57f07579ce23c63f7f64c6cacd41e2d7eee9d5abb461ab56d"
+      "bytes": 4864,
+      "sha256": "8b134c03cc842521fe3d12a0d30a272c1a4e5123fe73f8ad79c002586d983a0d"
     },
     {
       "path": "docs/06-quantization.md",
-      "bytes": 4556,
-      "sha256": "fffe8b0ff66482dc295ab79fd35f25141918a35f1c0d7946f2fc207b013b9ce1"
+      "bytes": 4591,
+      "sha256": "b7b5ec362555701aa0c94bf1b2a3a424fc52e20c33d0d9e53f90782dc692f497"
     },
     {
       "path": "docs/07-rag-and-agent.md",
-      "bytes": 4409,
-      "sha256": "ec4cb91e669541a6352cc999f3719cb7a64f06bde20a42c3373cc6f133cb526c"
+      "bytes": 4403,
+      "sha256": "bee9e2e4c2674511889a1d06e5985dc7e4ef5dbbb9dfc6706bd20a162b6c7b27"
     },
     {
       "path": "docs/08-llama-cpp.md",
@@ -143,38 +143,38 @@
     },
     {
       "path": "docs/09-serving-and-runtimes.md",
-      "bytes": 4551,
-      "sha256": "8bba68da5eb519913a6d54d27682196f1df0609d290d38e06cd1925113e604a6"
+      "bytes": 4553,
+      "sha256": "13a18ea74547d1e635eacfcdd826ff2fd470943e50e983cb32fa8ae3f9252381"
     },
     {
       "path": "docs/10-compiler.md",
-      "bytes": 4224,
-      "sha256": "759eae7ece8a27babe6065c48984961631a3bc00943b1a98ccdd0bb41a516aad"
+      "bytes": 4266,
+      "sha256": "017af5995a333bad8a7c636d2173ff25d12cd9e129a309f38d064472f26ca750"
     },
     {
       "path": "docs/11-kernel-and-flashattention.md",
-      "bytes": 4152,
-      "sha256": "2efa4d8c378302ca2f05f28549c3f6f5922061d0f3915abb6cc2399c5bfe9761"
+      "bytes": 4228,
+      "sha256": "eb90a451db51f701887578115f156d00e43a00d0a336f6694625eebd2600b329"
     },
     {
       "path": "docs/12-rknn.md",
-      "bytes": 4565,
-      "sha256": "09a4722626ff8776f5ad1c63f35946c1018a6f3d999f382912ba94bcf358151d"
+      "bytes": 4569,
+      "sha256": "249c07bd722dca5c3c818abb082ea47157313b9f62192bb92f2fde13398e2231"
     },
     {
       "path": "docs/13-rkllm.md",
-      "bytes": 4752,
-      "sha256": "ec3363bf3dd546146693bbddd07587b3fea561f6d58213d6f553358b772cdb9d"
+      "bytes": 4727,
+      "sha256": "0c76348fde9651f8e9c68390de104994d11cc2a6bb67b0cfd1cf3e2ad9806c5d"
     },
     {
       "path": "docs/14-linux-and-integration.md",
-      "bytes": 4259,
-      "sha256": "f58d58bedc901227d8c18a3fda9d439eadb12a665cc5a211a9d95490f864fdfc"
+      "bytes": 4261,
+      "sha256": "ef3e52e2aa04d5504c4b15cac2e77135bc85841c73925ec9c774ce2b01ad914e"
     },
     {
       "path": "docs/15-benchmark-and-debug.md",
-      "bytes": 4355,
-      "sha256": "b050891a97ce5e9b96603948c88550985f49350c4700d0fae1b192e3900219f0"
+      "bytes": 4387,
+      "sha256": "15550b1dc2d25d0d5c91439ee33f88dbafcb1cafc7635ef7cad0c2240da44fe2"
     },
     {
       "path": "docs/16-capstone.md",
@@ -183,28 +183,33 @@
     },
     {
       "path": "docs/17-model-anatomy.md",
-      "bytes": 4179,
-      "sha256": "224fe59eb768239eba18a73592b01f5a8319b78d574e6f8de8334303fd2780e0"
+      "bytes": 4203,
+      "sha256": "f092a87ab1e52db38897e663baa1d99b3164b9d1ff547aa849397766f4ee1c27"
     },
     {
       "path": "docs/glossary.md",
-      "bytes": 2439,
-      "sha256": "2adb6ea2dbaf8e7eb7759c52cf65aff2ebec5cf2cddb6e59d8cc813e949ec16a"
+      "bytes": 2499,
+      "sha256": "f4ab0cb7081f218a82f48d22fce39c5c6ea0c0adc0ab18908b59fe9417625a98"
     },
     {
       "path": "docs/knowledge-map.md",
-      "bytes": 3082,
-      "sha256": "fe7c0734b1681e212fcfd0641b52e50e4ba7e7979aec6acb51695029c792dca0"
+      "bytes": 3139,
+      "sha256": "72dc498716e85fd1d57416413210e1e62c159daf68fcbc4929152362e92e2db1"
+    },
+    {
+      "path": "docs/math-formatting.md",
+      "bytes": 1651,
+      "sha256": "9a70a299b8aa99e9480b184cdd8462a38f9104e857c804aea7b096714d3c373f"
+    },
+    {
+      "path": "docs/release-notes.md",
+      "bytes": 922,
+      "sha256": "15c2689e9615f9422306f039458f7ce6bc2641f50afeff622efd4f246993ba59"
     },
     {
       "path": "docs/roadmap.md",
       "bytes": 3879,
       "sha256": "83b72cd56b8cea4927734aa5015753217768875209103afac2cba5b51f0fea0d"
-    },
-    {
-      "path": "docs/source-review.md",
-      "bytes": 3947,
-      "sha256": "b188a3c72e305b00a718e652de73a446b1dc3bbb4eca4bf1e76a3877c19e5104"
     },
     {
       "path": "docs/understanding-and-decisions.md",
@@ -219,7 +224,7 @@
     {
       "path": "edge_ai_labs/__init__.py",
       "bytes": 93,
-      "sha256": "5084bb56aa1debf42d30ce0c5f8d94e4aa05ba3b0274bcd9b0a0a45ced1e7004"
+      "sha256": "78d157fafebe9b3ac73c3b046dbd7bc61f59540a51cee13cb519f646b0325b2b"
     },
     {
       "path": "edge_ai_labs/__main__.py",
@@ -248,18 +253,23 @@
     },
     {
       "path": "GITHUB_UPLOAD.md",
-      "bytes": 1984,
-      "sha256": "a7d538c842ffcccbaf0eb15414c84826e28d53b616ca116ddbd72dbf93398ee0"
+      "bytes": 1958,
+      "sha256": "3d832f1328f099284e88791574f18f8072cd93c2ee8ad25536947dc06c6dd321"
     },
     {
       "path": "index.html",
-      "bytes": 9778,
-      "sha256": "36a3697055b1d3d92cb94a851f379a4de42bd838832dfa47b729460554746018"
+      "bytes": 9812,
+      "sha256": "267db6b62c8424c168f28ac57b9760d66510786ea3feb07385deba4cf543db30"
     },
     {
       "path": "LICENSE",
-      "bytes": 1247,
-      "sha256": "7aed2da9c858dc88bbbcf762f63d12f434acbe7c04b6414250837e17f858469d"
+      "bytes": 1239,
+      "sha256": "2c73a8cae2d1757ed8f8302bb76f21f8449b1ad02bf2ef6c3b1ecabf3fc2ba89"
+    },
+    {
+      "path": "licenses/THIRD_PARTY_NOTICES.txt",
+      "bytes": 1069,
+      "sha256": "f863978a255b6c89e0180b1f24cc3e84a0c33fa4078ec8b0d4c19de773b70b86"
     },
     {
       "path": "practice.md",
@@ -268,18 +278,13 @@
     },
     {
       "path": "reader.html",
-      "bytes": 116195,
-      "sha256": "fdb7b310404b0a30e2633090bd1ac576f26c653a882f1d713f1e1527ba4c45ce"
+      "bytes": 120931,
+      "sha256": "4ea10d389984fc76f6b4fba257087da350a9aa36e3cff90fcc618f6efb1d9bdc"
     },
     {
       "path": "README.md",
-      "bytes": 6366,
-      "sha256": "e604bc0b405a2e4e18db8d5931120c8ed00b7f4628e41e24302221c750983f21"
-    },
-    {
-      "path": "references/original-project-LICENSE.txt",
-      "bytes": 1069,
-      "sha256": "f863978a255b6c89e0180b1f24cc3e84a0c33fa4078ec8b0d4c19de773b70b86"
+      "bytes": 6205,
+      "sha256": "79661e3e25e8f3b219f8680b419a6d35ecb8e1adf9ab8ed2d53d070a7ea16801"
     },
     {
       "path": "references/papers.bib",
@@ -288,13 +293,8 @@
     },
     {
       "path": "references/README.md",
-      "bytes": 6415,
-      "sha256": "a470c70b13d3f20aa8ddd1e61fa196168a0936d865004dcd7ffe3b451bbd56da"
-    },
-    {
-      "path": "references/source-snapshot.json",
-      "bytes": 7069,
-      "sha256": "f831b105815742b9982b8412b5f52ac02e70f05ba3a7618a3e2c9bb6733c2c90"
+      "bytes": 6318,
+      "sha256": "0b4bef04dd615af20d647c2d3fcd096af107938769e5275e6481a1ff75b9ad8c"
     },
     {
       "path": "reports/audit.json",
@@ -313,13 +313,23 @@
     },
     {
       "path": "reports/docs-check.json",
-      "bytes": 143,
-      "sha256": "429ec1efcd62c9f87172c77dcb6ae9194c355b53ef89decee59840607ba26abc"
+      "bytes": 189,
+      "sha256": "6dee8c4034d9079c6d0d7ec78958fd62162ef9ef99fb5f5c07afa91814a734e6"
+    },
+    {
+      "path": "reports/github-browser-check.json",
+      "bytes": 175,
+      "sha256": "36a796a07c970abcd65f4886117a23570c4c47fa22d941756bb67b3b95f02125"
+    },
+    {
+      "path": "reports/github-math-check.json",
+      "bytes": 1802,
+      "sha256": "2d3521131f93b74f14749383644f57fe7c4de988920339f5f7b1b8d731597513"
     },
     {
       "path": "reports/README.md",
-      "bytes": 3318,
-      "sha256": "abaf1d42cd857a42150611cb7d2652ae59035d9ad5bbdfe6476fc4f2a74978f8"
+      "bytes": 3820,
+      "sha256": "986dde1c9bb4b7525f791d54f10abee05192ecf161a2d29bd9d8946fb868e2f8"
     },
     {
       "path": "reports/report-full.json",
@@ -328,8 +338,8 @@
     },
     {
       "path": "reports/tests.txt",
-      "bytes": 984,
-      "sha256": "1a128d04af3e7669ceab8a5b415d9483de3c6b6e84093b764dfbe7d3ff29efc5"
+      "bytes": 1671,
+      "sha256": "c6b08fed20b2cafc61297327994430c495f0faad3062273904c444c4ef51c0a0"
     },
     {
       "path": "reports/tiny_lm_curve.json",
@@ -343,8 +353,8 @@
     },
     {
       "path": "requirements-docs.txt",
-      "bytes": 17,
-      "sha256": "a1a5ec561007194f84436424b769de2490ffd88261953ad083dfff359b7c4149"
+      "bytes": 33,
+      "sha256": "a028f2a751f9be103f3b2c0aaa73c3a5ed3f07e2eec57b32a0c6678013d11e00"
     },
     {
       "path": "requirements-export.txt",
@@ -388,8 +398,8 @@
     },
     {
       "path": "scripts/build_docs.py",
-      "bytes": 15103,
-      "sha256": "093ad0d4467efef6439e7a384c1761ba98a80df683b29a5acb92152698ccc5de"
+      "bytes": 15056,
+      "sha256": "15f0be51e6d4ff4cbd306d105133027e46b1f50a8be7415cfe434c04463b053a"
     },
     {
       "path": "scripts/build_visuals.py",
@@ -398,18 +408,28 @@
     },
     {
       "path": "scripts/check_docs.py",
-      "bytes": 3264,
-      "sha256": "c1e5b416bce61ad517853d89aa47401f9c608a0c772a1b7c1cb8abaefe4dd38b"
+      "bytes": 3676,
+      "sha256": "778ef1b44f135a6ee540a993c02de2db018232347b0d204e9600eb3f215942e9"
+    },
+    {
+      "path": "scripts/check_github_math.py",
+      "bytes": 4227,
+      "sha256": "1da46e1f24ed52b68975b19e5233e01cfce65eda43bd57e9b1d4ac63857490ac"
+    },
+    {
+      "path": "scripts/markdown_math.py",
+      "bytes": 5353,
+      "sha256": "4d1c46b8a6ec3f466d634110491a345fc0f3f2d311a86ec1cb77e286225f61b9"
     },
     {
       "path": "scripts/package.py",
-      "bytes": 1592,
-      "sha256": "bc2387feefd4ce23cfeff420e8f738bd607e2de4764a82e8e2e001e2bbb83fe0"
+      "bytes": 1936,
+      "sha256": "c91ce84e01b6fbc3754692882580269b189a699bc75cee9f35c934b884f999d4"
     },
     {
       "path": "scripts/qa_browser.py",
-      "bytes": 4473,
-      "sha256": "a0e87a3ce4ef1946bf2a2973b0c78ab88c28fda14b0c99595f2df2b8fd6a920f"
+      "bytes": 4705,
+      "sha256": "48c351682d83e9600802a980d62d468c23ceb5761c2942c28a47b115ab2a4658"
     },
     {
       "path": "templates/experiment.md",
@@ -427,9 +447,19 @@
       "sha256": "5f2065cd7ab8f0e85ff107a0df767e7f8eaae85d872891c8f2f3ae171cd492b9"
     },
     {
+      "path": "tests/test_markdown_math.py",
+      "bytes": 2314,
+      "sha256": "71b2db0e64bd52b162501c0357b689683081ddbece069d5cdc4a49e9787aa6bf"
+    },
+    {
       "path": "tutorial.md",
       "bytes": 12015,
-      "sha256": "ba64780ef8b0147ff119bf1a53b5455639d0c86543b4a6686d33819d9c5e5432"
+      "sha256": "c39c116063bc9d32296b1be06ed9b40d90f5de3761dd37db4fc4d327ced8ffd1"
+    },
+    {
+      "path": "UPDATE_v1.1.md",
+      "bytes": 974,
+      "sha256": "edc928c0d63b07b9f71b7e65f8c0470a3c9891d4ed137b9d621840b5385d8594"
     },
     {
       "path": "vendor/mathjax/LICENSE",

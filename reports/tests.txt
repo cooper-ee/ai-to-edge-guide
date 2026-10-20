@@ -5,12 +5,20 @@ test_gradient_finite_difference (test_invariants.NumericalInvariants) ... ok
 test_quantization_zero_and_range (test_invariants.NumericalInvariants) ... ok
 test_scheduler_conserves_tokens_and_slots (test_invariants.NumericalInvariants) ... ok
 test_tools_reject_unknown_and_extra_fields (test_invariants.NumericalInvariants) ... ok
-test_real_http_valid_and_invalid_requests (test_invariants.ServiceIntegration) ... 127.0.0.1 - - [19/Oct/2026 23:13:57] "GET /health HTTP/1.1" 200 -
-127.0.0.1 - - [19/Oct/2026 23:13:57] "POST /predict HTTP/1.1" 200 -
-127.0.0.1 - - [19/Oct/2026 23:13:57] "POST /predict HTTP/1.1" 400 -
+test_real_http_valid_and_invalid_requests (test_invariants.ServiceIntegration) ... 127.0.0.1 - - [20/Oct/2026 11:13:08] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [20/Oct/2026 11:13:08] "POST /predict HTTP/1.1" 200 -
+127.0.0.1 - - [20/Oct/2026 11:13:08] "POST /predict HTTP/1.1" 400 -
 ok
+test_adjacent_inline_formulae_remain_separate (test_markdown_math.MarkdownMath) ... ok
+test_audit_detects_legacy_and_unbalanced (test_markdown_math.MarkdownMath) ... ok
+test_comparison_symbols_do_not_pass_through_html (test_markdown_math.MarkdownMath) ... ok
+test_display_matrix_retains_row_separators (test_markdown_math.MarkdownMath) ... ok
+test_html_conversion_separates_math_from_code (test_markdown_math.MarkdownMath) ... ok
+test_normalization_is_idempotent (test_markdown_math.MarkdownMath) ... ok
+test_shell_code_and_inline_code_are_unchanged (test_markdown_math.MarkdownMath) ... ok
+test_supported_macro_replacement_and_fraction (test_markdown_math.MarkdownMath) ... ok
 
 ----------------------------------------------------------------------
-Ran 8 tests in 2.729s
+Ran 16 tests in 7.499s
 
 OK

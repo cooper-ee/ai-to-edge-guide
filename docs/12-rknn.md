@@ -37,7 +37,7 @@ python adapters/convert_rknn.py --model artifacts/classifier-static.onnx --targe
 
 ## NCHW、NHWC 与预处理
 
-图像链路要逐项固定：相机/文件输入 → 色彩空间 → 裁剪/letterbox → resize → 归一化 → layout → dtype → 推理 → 后处理。NCHW 是 $[B,C,H,W]$，NHWC 是 $[B,H,W,C]$；交换 shape 不能代替正确地转置数据。
+图像链路要逐项固定：相机/文件输入 → 色彩空间 → 裁剪/letterbox → resize → 归一化 → layout → dtype → 推理 → 后处理。NCHW 是 $`[B,C,H,W]`$，NHWC 是 $`[B,H,W,C]`$；交换 shape 不能代替正确地转置数据。
 
 假如训练用 RGB，而摄像头给 BGR，模型往往还能输出“像真的”类别，但整体质量变差。把一张有红、绿、蓝三色块的测试图跑过完整预处理，直接检查输入张量，比盲目调阈值有效。
 

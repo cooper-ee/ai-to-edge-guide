@@ -6,6 +6,10 @@ from pathlib import Path
 import re
 from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
+try:
+    from .markdown_math import audit
+except ImportError:
+    from markdown_math import audit
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -35,11 +39,14 @@ def markdown_ids(s):
 
 
 def check():
-    errors=[];links=0;files=0
+    errors=[];links=0;files=0;inline_math=display_math=0
     for path in [*ROOT.rglob('*.md'),*ROOT.glob('*.html')]:
         if any(x in path.relative_to(ROOT).parts for x in ['artifacts','__pycache__','.venv']):continue
         files+=1;s=path.read_text(encoding='utf8')
         if path.suffix=='.md':
+            math_result=audit(s)
+            inline_math+=math_result['inline'];display_math+=math_result['display']
+            errors.extend(f'{path.relative_to(ROOT)}: {message}' for message in math_result['errors'])
             clean=re.sub(r'```[\s\S]*?```','',s)
             targets=re.findall(r'!?\[[^\]]*\]\(([^\s)]+)(?:\s+"[^"]*")?\)',clean)
             parser=Links();parser.feed(clean);targets+=parser.links
@@ -69,7 +76,8 @@ def check():
     course_count=len(list((ROOT/'docs').glob('[0-9][0-9]-*.md')))
     if course_count!=18:errors.append(f'Expected 18 core courses, got {course_count}')
     result=dict(document_files=files,local_links_checked=links,python_files_parsed=len(python_files),
-                courses=course_count,svg_files=len(list((ROOT/'assets').glob('*.svg'))),errors=errors)
+                courses=course_count,svg_files=len(list((ROOT/'assets').glob('*.svg'))),
+                inline_math=inline_math,display_math=display_math,errors=errors)
     print(json.dumps(result,ensure_ascii=False,indent=2))
     if errors:raise SystemExit(1)
     return result

@@ -35,7 +35,7 @@ curl -X POST http://127.0.0.1:8000/predict -H 'Content-Type: application/json' -
 1. `serve.py::build_server` 读取权重、均值和标准差，并计算模型 SHA256。
 2. `Handler.do_GET` 的 `/health` 返回 ready 和模型标识；未知路径返回 404。
 3. `Handler.do_POST` 校验请求路径、body 长度和字段集合。
-4. 检查输入必须是有限数值的 `[B,4]`，$1\le B\le64$。
+4. 检查输入必须是有限数值的 `[B,4]`，$`1\le B\le64`$。
 5. 标准化 → MLP → softmax → JSON 概率和预测；输入错误返回 400。
 
 测试实际启动临时端口，检查健康、正常预测和错误 shape；它不是只调用内部函数的假集成。服务使用只读推理模型，尚未实现排队容量、生产超时治理和滚动发布。
