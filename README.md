@@ -16,7 +16,6 @@
 
 学框架之前，先弄清模型在做什么；测速度之前，先证明输出正确；接硬件之前，先把输入契约和版本锁定。每课按“问题 → 直觉 → 公式/数据流 → 源码 → 实验 → 过关任务”组织。数学例子和错误反例帮助建立自己的判断，而不是背术语清单。
 
-这个项目参考 [yunxiao11xie/ai-to-edge-deployment](https://github.com/yunxiao11xie/ai-to-edge-deployment) 的主题覆盖，重新设计了课程依赖、实验与图示。它增加独立量化课程、数值等价验证、完整 CPU 交付主线、混合架构账本和实验状态说明。[来源与改进逐项对照](docs/source-review.md) · [本教程的理解与取舍](docs/understanding-and-decisions.md)
 
 ## 学习路线
 
